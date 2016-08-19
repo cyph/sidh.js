@@ -27,12 +27,10 @@ all:
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_sidhjs_init'"'"', \
 				'"'"'_sidhjs_keypair'"'"', \
-				'"'"'_sidhjs_encrypt'"'"', \
-				'"'"'_sidhjs_decrypt'"'"', \
+				'"'"'_sidhjs_secret'"'"', \
 				'"'"'_sidhjs_public_key_bytes'"'"', \
-				'"'"'_sidhjs_secret_key_bytes'"'"', \
-				'"'"'_sidhjs_encrypted_bytes'"'"', \
-				'"'"'_sidhjs_decrypted_bytes'"'"' \
+				'"'"'_sidhjs_private_key_bytes'"'"', \
+				'"'"'_sidhjs_secret_bytes'"'"' \
 			]\" \
 			--pre-js pre.js --post-js post.js \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \

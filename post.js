@@ -1,5 +1,14 @@
 ;
 
+function dataReturn (returnValue, result) {
+	if (returnValue === 0) {
+		return result;
+	}
+	else {
+		throw new Error('SIDH error: ' + returnValue);
+	}
+}
+
 function dataResult (buffer, bytes) {
 	return new Uint8Array(
 		new Uint8Array(Module.HEAPU8.buffer, buffer, bytes)
@@ -19,24 +28,28 @@ Module._sidhjs_init();
 
 var sidh	= {
 	publicKeyLength: Module._sidhjs_public_key_bytes(),
-	privateKeyLength: Module._sidhjs_secret_key_bytes(),
-	encryptedDataLength: Module._sidhjs_encrypted_bytes(),
-	decryptedDataLength: Module._sidhjs_decrypted_bytes(),
+	privateKeyLength: Module._sidhjs_private_key_bytes(),
+	secretLength: Module._sidhjs_secret_bytes(),
 
-	keyPair: function () {
+	keyPair: function (isAlice) {
+		if (typeof isAlice !== 'boolean') {
+			throw 'Must specify whether this key pair is for Alice.';
+		}
+
 		var publicKeyBuffer		= Module._malloc(sidh.publicKeyLength);
 		var privateKeyBuffer	= Module._malloc(sidh.privateKeyLength);
 
 		try {
-			Module._sidhjs_keypair(
+			var returnValue	= Module._sidhjs_keypair(
+				isAlice ? 1 : 0,
 				publicKeyBuffer,
 				privateKeyBuffer
 			);
 
-			return {
+			return dataReturn(returnValue, {
 				publicKey: dataResult(publicKeyBuffer, sidh.publicKeyLength),
 				privateKey: dataResult(privateKeyBuffer, sidh.privateKeyLength)
-			};
+			});
 		}
 		finally {
 			dataFree(publicKeyBuffer);
@@ -44,65 +57,30 @@ var sidh	= {
 		}
 	},
 
-	encrypt: function (message, publicKey) {
-		var messageBuffer	= Module._malloc(message.length + 4);
-		var publicKeyBuffer	= Module._malloc(sidh.publicKeyLength);
-		var encryptedBuffer	= Module._malloc(sidh.encryptedDataLength);
-
-		Module.writeArrayToMemory(message, messageBuffer + 4);
-		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
-
-		Module.writeArrayToMemory(
-			new Uint8Array(
-				new Uint32Array([message.length]).buffer
-			),
-			messageBuffer
-		);
-
-		try {
-			Module._sidhjs_encrypt(
-				messageBuffer,
-				publicKeyBuffer,
-				encryptedBuffer
-			);
-
-			return dataResult(encryptedBuffer, sidh.encryptedDataLength);
-		}
-		finally {
-			dataFree(messageBuffer);
-			dataFree(publicKeyBuffer);
-			dataFree(encryptedBuffer);
-		}
-	},
-
-	decrypt: function (encrypted, privateKey) {
-		var encryptedBuffer		= Module._malloc(sidh.encryptedDataLength);
+	secret: function (publicKey, privateKey) {
+		var publicKeyBuffer		= Module._malloc(sidh.publicKeyLength);
 		var privateKeyBuffer	= Module._malloc(sidh.privateKeyLength);
-		var decryptedBuffer		= Module._malloc(sidh.decryptedDataLength);
+		var secretBuffer		= Module._malloc(sidh.secretLength);
 
-		Module.writeArrayToMemory(encrypted, encryptedBuffer);
+		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
 		try {
-			Module._sidhjs_decrypt(
-				encryptedBuffer,
+			var returnValue	= Module._sidhjs_secret(
+				publicKeyBuffer,
 				privateKeyBuffer,
-				decryptedBuffer
+				secretBuffer
 			);
 
-			return dataResult(
-				decryptedBuffer + 4,
-				new Uint32Array(
-					Module.HEAPU8.buffer,
-					decryptedBuffer,
-					1
-				)[0]
+			return dataReturn(
+				returnValue,
+				dataResult(secretBuffer, sidh.secretLength)
 			);
 		}
 		finally {
-			dataFree(encryptedBuffer);
+			dataFree(publicKeyBuffer);
 			dataFree(privateKeyBuffer);
-			dataFree(decryptedBuffer);
+			dataFree(secretBuffer);
 		}
 	}
 };

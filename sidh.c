@@ -5,52 +5,100 @@
 #include "randombytes.h"
 
 
-void sidhjs_init () {
-	/*
-	size_t randomstate_len	= 256;
-	char* randomstate		= (char*) malloc(randomstate_len);
+PCurveIsogenyStruct isogeny;
 
+long public_key_bytes	= 768;
+long private_key_bytes	= 48;
+
+
+CRYPTO_STATUS sidhjs_randombytes (unsigned int nbytes, unsigned char* random_array) {
+	randombytes_buf(random_array, nbytes);
+	return CRYPTO_SUCCESS;
+}
+
+CRYPTO_STATUS sidhjs_init () {
 	randombytes_stir();
-	randombytes_buf(randomstate, randomstate_len);
-	initstate(time(NULL), randomstate, randomstate_len);
-	*/
+
+	isogeny	= SIDH_curve_allocate(&CurveIsogeny_SIDHp751);
+
+	return SIDH_curve_initialize(
+		isogeny,
+		sidhjs_randombytes,
+		&CurveIsogeny_SIDHp751
+	);
 }
 
 long sidhjs_public_key_bytes () {
-	return 0; // PUBLICKEY_BYTES;
+	return public_key_bytes + 1;
 }
 
-long sidhjs_secret_key_bytes () {
-	return 0; // SECRETKEY_BYTES;
+long sidhjs_private_key_bytes () {
+	return private_key_bytes + 1;
 }
 
-long sidhjs_encrypted_bytes () {
-	return 0; // CIPHERTEXT_BYTES;
+long sidhjs_secret_bytes () {
+	return 192;
 }
 
-long sidhjs_decrypted_bytes () {
-	return 0; // CLEARTEXT_BYTES;
-}
-
-void sidhjs_keypair (
-	uint8_t* public_key,
-	uint8_t* private_key
+CRYPTO_STATUS sidhjs_keypair (
+	int is_alice,
+	uint8_t public_key[],
+	uint8_t private_key[]
 ) {
-	// keypair(private_key, public_key);
+	CRYPTO_STATUS status;
+
+	if (is_alice) {
+		status	= KeyGeneration_A(private_key, public_key, isogeny);
+
+		public_key[public_key_bytes]	= 1;
+		private_key[private_key_bytes]	= 1;
+	}
+	else {
+		status	= KeyGeneration_B(private_key, public_key, isogeny);
+
+		public_key[public_key_bytes]	= 0;
+		private_key[private_key_bytes]	= 0;
+	}
+
+	return status;
 }
 
-void sidhjs_encrypt (
-	uint8_t* message,
-	uint8_t* public_key,
-	uint8_t* cyphertext
+CRYPTO_STATUS sidhjs_secret (
+	uint8_t public_key[],
+	uint8_t private_key[],
+	uint8_t* secret
 ) {
-	// encrypt_block(cyphertext, message, public_key);
-}
+	bool valid;
+	CRYPTO_STATUS (*validate)(unsigned char* pk, bool* v, PCurveIsogenyStruct iso);
+	CRYPTO_STATUS (*secret_agreement)(unsigned char* sk, unsigned char* pk, unsigned char* s, PCurveIsogenyStruct iso);
 
-void sidhjs_decrypt (
-	uint8_t* cyphertext,
-	uint8_t* private_key,
-	uint8_t* decrypted
-) {
-	// decrypt_block(decrypted, cyphertext, private_key);
+	int is_public_alice		= public_key[public_key_bytes];
+	int is_private_alice	= private_key[private_key_bytes];
+
+	if (
+		(is_public_alice && is_private_alice) ||
+		(!is_public_alice && !is_private_alice)
+	) {
+		return CRYPTO_ERROR_INVALID_PARAMETER;
+	}
+
+	if (is_private_alice) {
+		validate			= Validate_PKB;
+		secret_agreement	= SecretAgreement_A;
+	}
+	else {
+		validate			= Validate_PKA;
+		secret_agreement	= SecretAgreement_B;
+	}
+
+	CRYPTO_STATUS validate_status	= validate(public_key, &valid, isogeny);
+
+	if (validate_status != CRYPTO_SUCCESS) {
+		return validate_status;
+	}
+	if (!valid) {
+		return CRYPTO_ERROR_PUBLIC_KEY_VALIDATION;
+	}
+
+	return secret_agreement(private_key, public_key, secret, isogeny);
 }
