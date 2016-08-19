@@ -68,10 +68,6 @@ CRYPTO_STATUS sidhjs_secret (
 	uint8_t private_key[],
 	uint8_t* secret
 ) {
-	bool valid;
-	CRYPTO_STATUS (*validate)(unsigned char* pk, bool* v, PCurveIsogenyStruct iso);
-	CRYPTO_STATUS (*secret_agreement)(unsigned char* sk, unsigned char* pk, unsigned char* s, PCurveIsogenyStruct iso);
-
 	int is_public_alice		= public_key[public_key_bytes];
 	int is_private_alice	= private_key[private_key_bytes];
 
@@ -83,15 +79,25 @@ CRYPTO_STATUS sidhjs_secret (
 	}
 
 	if (is_private_alice) {
-		validate			= Validate_PKB;
-		secret_agreement	= SecretAgreement_A;
+		return SecretAgreement_A(private_key, public_key, secret, isogeny);
 	}
 	else {
-		validate			= Validate_PKA;
-		secret_agreement	= SecretAgreement_B;
+		return SecretAgreement_B(private_key, public_key, secret, isogeny);
 	}
+}
 
-	CRYPTO_STATUS validate_status	= validate(public_key, &valid, isogeny);
+CRYPTO_STATUS sidhjs_validate (uint8_t public_key[]) {
+	bool valid;
+	CRYPTO_STATUS validate_status;
+
+	int is_alice		= public_key[public_key_bytes];
+
+	if (is_alice) {
+		validate_status	= Validate_PKA(public_key, &valid, isogeny);
+	}
+	else {
+		validate_status	= Validate_PKB(public_key, &valid, isogeny);
+	}
 
 	if (validate_status != CRYPTO_SUCCESS) {
 		return validate_status;
@@ -100,5 +106,5 @@ CRYPTO_STATUS sidhjs_secret (
 		return CRYPTO_ERROR_PUBLIC_KEY_VALIDATION;
 	}
 
-	return secret_agreement(private_key, public_key, secret, isogeny);
+	return CRYPTO_SUCCESS;
 }

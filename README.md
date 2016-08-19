@@ -15,6 +15,10 @@ The parameters are configured to 128-bit strength. (More specifically, the secur
 	const localKeyPair	= sidh.keyPair(true);
 	const remoteKeyPair	= sidh.keyPair(false);
 
+	if (!sidh.validate(remoteKeyPair.publicKey)) {
+		throw "Bob's public key is invalid.";
+	}
+
 	const localSecret	= sidh.secret(remoteKeyPair.publicKey, localKeyPair.privateKey);
 	const remoteSecret	= sidh.secret(localKeyPair.publicKey, remoteKeyPair.privateKey);
 

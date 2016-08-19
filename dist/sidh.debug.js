@@ -2550,40 +2550,8 @@ assert(DYNAMIC_BASE < TOTAL_MEMORY, "TOTAL_MEMORY not big enough for stack");
 
 
 
-var debug_table_iiii = ["0", "jsCall_iiii_0", "jsCall_iiii_1", "jsCall_iiii_2", "jsCall_iiii_3", "jsCall_iiii_4", "jsCall_iiii_5", "jsCall_iiii_6", "jsCall_iiii_7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "_Validate_PKB", "_Validate_PKA", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
-var debug_table_iiiii = ["0", "jsCall_iiiii_0", "jsCall_iiiii_1", "jsCall_iiiii_2", "jsCall_iiiii_3", "jsCall_iiiii_4", "jsCall_iiiii_5", "jsCall_iiiii_6", "jsCall_iiiii_7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "_SecretAgreement_A", "_SecretAgreement_B", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
 var debug_table_iii = ["0", "jsCall_iii_0", "jsCall_iii_1", "jsCall_iii_2", "jsCall_iii_3", "jsCall_iii_4", "jsCall_iii_5", "jsCall_iii_6", "jsCall_iii_7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "_sidhjs_randombytes", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
-function nullFunc_iiii(x) { Module["printErr"]("Invalid function pointer '" + x + "' called with signature 'iiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("This pointer might make sense in another type signature: iii: " + debug_table_iii[x] + "  iiiii: " + debug_table_iiiii[x] + "  "); abort(x) }
-
-function nullFunc_iiiii(x) { Module["printErr"]("Invalid function pointer '" + x + "' called with signature 'iiiii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("This pointer might make sense in another type signature: iiii: " + debug_table_iiii[x] + "  iii: " + debug_table_iii[x] + "  "); abort(x) }
-
-function nullFunc_iii(x) { Module["printErr"]("Invalid function pointer '" + x + "' called with signature 'iii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("This pointer might make sense in another type signature: iiii: " + debug_table_iiii[x] + "  iiiii: " + debug_table_iiiii[x] + "  "); abort(x) }
-
-function invoke_iiii(index,a1,a2,a3) {
-  try {
-    return Module["dynCall_iiii"](index,a1,a2,a3);
-  } catch(e) {
-    if (typeof e !== 'number' && e !== 'longjmp') throw e;
-    asm["setThrew"](1, 0);
-  }
-}
-
-function jsCall_iiii(index,a1,a2,a3) {
-    return Runtime.functionPointers[index](a1,a2,a3);
-}
-
-function invoke_iiiii(index,a1,a2,a3,a4) {
-  try {
-    return Module["dynCall_iiiii"](index,a1,a2,a3,a4);
-  } catch(e) {
-    if (typeof e !== 'number' && e !== 'longjmp') throw e;
-    asm["setThrew"](1, 0);
-  }
-}
-
-function jsCall_iiiii(index,a1,a2,a3,a4) {
-    return Runtime.functionPointers[index](a1,a2,a3,a4);
-}
+function nullFunc_iii(x) { Module["printErr"]("Invalid function pointer '" + x + "' called with signature 'iii'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("This pointer might make sense in another type signature: "); abort(x) }
 
 function invoke_iii(index,a1,a2) {
   try {
@@ -2600,7 +2568,7 @@ function jsCall_iii(index,a1,a2) {
 
 Module.asmGlobalArg = { "Math": Math, "Int8Array": Int8Array, "Int16Array": Int16Array, "Int32Array": Int32Array, "Uint8Array": Uint8Array, "Uint16Array": Uint16Array, "Uint32Array": Uint32Array, "Float32Array": Float32Array, "Float64Array": Float64Array, "NaN": NaN, "Infinity": Infinity };
 
-Module.asmLibraryArg = { "abort": abort, "assert": assert, "nullFunc_iiii": nullFunc_iiii, "nullFunc_iiiii": nullFunc_iiiii, "nullFunc_iii": nullFunc_iii, "invoke_iiii": invoke_iiii, "jsCall_iiii": jsCall_iiii, "invoke_iiiii": invoke_iiiii, "jsCall_iiiii": jsCall_iiiii, "invoke_iii": invoke_iii, "jsCall_iii": jsCall_iii, "_emscripten_set_main_loop": _emscripten_set_main_loop, "_pthread_self": _pthread_self, "_abort": _abort, "___setErrNo": ___setErrNo, "_sbrk": _sbrk, "_time": _time, "_emscripten_set_main_loop_timing": _emscripten_set_main_loop_timing, "_emscripten_memcpy_big": _emscripten_memcpy_big, "_sysconf": _sysconf, "_emscripten_asm_const_0": _emscripten_asm_const_0, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT };
+Module.asmLibraryArg = { "abort": abort, "assert": assert, "nullFunc_iii": nullFunc_iii, "invoke_iii": invoke_iii, "jsCall_iii": jsCall_iii, "_emscripten_set_main_loop": _emscripten_set_main_loop, "_pthread_self": _pthread_self, "_abort": _abort, "___setErrNo": ___setErrNo, "_sbrk": _sbrk, "_time": _time, "_emscripten_set_main_loop_timing": _emscripten_set_main_loop_timing, "_emscripten_memcpy_big": _emscripten_memcpy_big, "_sysconf": _sysconf, "_emscripten_asm_const_0": _emscripten_asm_const_0, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT };
 // EMSCRIPTEN_START_ASM
 var asm = (function(global, env, buffer) {
   'almost asm';
@@ -2657,13 +2625,7 @@ var asm = (function(global, env, buffer) {
   var Math_clz32=global.Math.clz32;
   var abort=env.abort;
   var assert=env.assert;
-  var nullFunc_iiii=env.nullFunc_iiii;
-  var nullFunc_iiiii=env.nullFunc_iiiii;
   var nullFunc_iii=env.nullFunc_iii;
-  var invoke_iiii=env.invoke_iiii;
-  var jsCall_iiii=env.jsCall_iiii;
-  var invoke_iiiii=env.invoke_iiiii;
-  var jsCall_iiiii=env.jsCall_iiiii;
   var invoke_iii=env.invoke_iii;
   var jsCall_iii=env.jsCall_iii;
   var _emscripten_set_main_loop=env._emscripten_set_main_loop;
@@ -10255,82 +10217,104 @@ function _sidhjs_secret($public_key,$private_key,$secret) {
  $private_key = $private_key|0;
  $secret = $secret|0;
  var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $25 = 0, $26 = 0;
- var $27 = 0, $28 = 0, $29 = 0, $3 = 0, $30 = 0, $31 = 0, $32 = 0, $33 = 0, $34 = 0, $35 = 0, $36 = 0, $37 = 0, $38 = 0, $39 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0;
- var $is_private_alice = 0, $is_public_alice = 0, $or$cond = 0, $or$cond3 = 0, $secret_agreement = 0, $valid = 0, $validate = 0, $validate_status = 0, label = 0, sp = 0;
+ var $27 = 0, $28 = 0, $29 = 0, $3 = 0, $30 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $is_private_alice = 0, $is_public_alice = 0, $or$cond = 0, $or$cond3 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- STACKTOP = STACKTOP + 48|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
- $valid = sp + 36|0;
+ STACKTOP = STACKTOP + 32|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
  $1 = $public_key;
  $2 = $private_key;
  $3 = $secret;
- $4 = HEAP32[4728>>2]|0; //@line 75 "sidh.c"
- $5 = $1; //@line 75 "sidh.c"
- $6 = (($5) + ($4)|0); //@line 75 "sidh.c"
- $7 = HEAP8[$6>>0]|0; //@line 75 "sidh.c"
- $8 = $7&255; //@line 75 "sidh.c"
- $is_public_alice = $8; //@line 75 "sidh.c"
- $9 = HEAP32[4732>>2]|0; //@line 76 "sidh.c"
- $10 = $2; //@line 76 "sidh.c"
- $11 = (($10) + ($9)|0); //@line 76 "sidh.c"
- $12 = HEAP8[$11>>0]|0; //@line 76 "sidh.c"
- $13 = $12&255; //@line 76 "sidh.c"
- $is_private_alice = $13; //@line 76 "sidh.c"
- $14 = $is_public_alice; //@line 79 "sidh.c"
- $15 = ($14|0)!=(0); //@line 79 "sidh.c"
+ $4 = HEAP32[4728>>2]|0; //@line 71 "sidh.c"
+ $5 = $1; //@line 71 "sidh.c"
+ $6 = (($5) + ($4)|0); //@line 71 "sidh.c"
+ $7 = HEAP8[$6>>0]|0; //@line 71 "sidh.c"
+ $8 = $7&255; //@line 71 "sidh.c"
+ $is_public_alice = $8; //@line 71 "sidh.c"
+ $9 = HEAP32[4732>>2]|0; //@line 72 "sidh.c"
+ $10 = $2; //@line 72 "sidh.c"
+ $11 = (($10) + ($9)|0); //@line 72 "sidh.c"
+ $12 = HEAP8[$11>>0]|0; //@line 72 "sidh.c"
+ $13 = $12&255; //@line 72 "sidh.c"
+ $is_private_alice = $13; //@line 72 "sidh.c"
+ $14 = $is_public_alice; //@line 75 "sidh.c"
+ $15 = ($14|0)!=(0); //@line 75 "sidh.c"
  $16 = $is_private_alice;
- $17 = ($16|0)!=(0); //@line 79 "sidh.c"
- $or$cond = $15 & $17; //@line 79 "sidh.c"
+ $17 = ($16|0)!=(0); //@line 75 "sidh.c"
+ $or$cond = $15 & $17; //@line 75 "sidh.c"
  if (!($or$cond)) {
-  $18 = $is_public_alice; //@line 80 "sidh.c"
-  $19 = ($18|0)!=(0); //@line 80 "sidh.c"
+  $18 = $is_public_alice; //@line 76 "sidh.c"
+  $19 = ($18|0)!=(0); //@line 76 "sidh.c"
   $20 = $is_private_alice;
-  $21 = ($20|0)!=(0); //@line 80 "sidh.c"
-  $or$cond3 = $19 | $21; //@line 80 "sidh.c"
+  $21 = ($20|0)!=(0); //@line 76 "sidh.c"
+  $or$cond3 = $19 | $21; //@line 76 "sidh.c"
   if ($or$cond3) {
-   $22 = $is_private_alice; //@line 85 "sidh.c"
-   $23 = ($22|0)!=(0); //@line 85 "sidh.c"
+   $22 = $is_private_alice; //@line 81 "sidh.c"
+   $23 = ($22|0)!=(0); //@line 81 "sidh.c"
+   $24 = $2; //@line 82 "sidh.c"
+   $25 = $1; //@line 82 "sidh.c"
+   $26 = $3; //@line 82 "sidh.c"
+   $27 = HEAP32[4736>>2]|0; //@line 82 "sidh.c"
    if ($23) {
-    $validate = 18; //@line 86 "sidh.c"
-    $secret_agreement = 18; //@line 87 "sidh.c"
+    $28 = (_SecretAgreement_A($24,$25,$26,$27)|0); //@line 82 "sidh.c"
+    $0 = $28; //@line 82 "sidh.c"
+    $30 = $0; //@line 87 "sidh.c"
+    STACKTOP = sp;return ($30|0); //@line 87 "sidh.c"
    } else {
-    $validate = 19; //@line 90 "sidh.c"
-    $secret_agreement = 19; //@line 91 "sidh.c"
-   }
-   $24 = $validate; //@line 94 "sidh.c"
-   $25 = $1; //@line 94 "sidh.c"
-   $26 = HEAP32[4736>>2]|0; //@line 94 "sidh.c"
-   $27 = (FUNCTION_TABLE_iiii[$24 & 31]($25,$valid,$26)|0); //@line 94 "sidh.c"
-   $validate_status = $27; //@line 94 "sidh.c"
-   $28 = $validate_status; //@line 96 "sidh.c"
-   $29 = ($28|0)!=(0); //@line 96 "sidh.c"
-   if ($29) {
-    $30 = $validate_status; //@line 97 "sidh.c"
-    $0 = $30; //@line 97 "sidh.c"
-    $39 = $0; //@line 104 "sidh.c"
-    STACKTOP = sp;return ($39|0); //@line 104 "sidh.c"
-   }
-   $31 = HEAP8[$valid>>0]|0; //@line 99 "sidh.c"
-   $32 = $31&1; //@line 99 "sidh.c"
-   if ($32) {
-    $33 = $secret_agreement; //@line 103 "sidh.c"
-    $34 = $2; //@line 103 "sidh.c"
-    $35 = $1; //@line 103 "sidh.c"
-    $36 = $3; //@line 103 "sidh.c"
-    $37 = HEAP32[4736>>2]|0; //@line 103 "sidh.c"
-    $38 = (FUNCTION_TABLE_iiiii[$33 & 31]($34,$35,$36,$37)|0); //@line 103 "sidh.c"
-    $0 = $38; //@line 103 "sidh.c"
-    $39 = $0; //@line 104 "sidh.c"
-    STACKTOP = sp;return ($39|0); //@line 104 "sidh.c"
-   } else {
-    $0 = 8; //@line 100 "sidh.c"
-    $39 = $0; //@line 104 "sidh.c"
-    STACKTOP = sp;return ($39|0); //@line 104 "sidh.c"
+    $29 = (_SecretAgreement_B($24,$25,$26,$27)|0); //@line 85 "sidh.c"
+    $0 = $29; //@line 85 "sidh.c"
+    $30 = $0; //@line 87 "sidh.c"
+    STACKTOP = sp;return ($30|0); //@line 87 "sidh.c"
    }
   }
  }
- $0 = 6; //@line 82 "sidh.c"
- $39 = $0; //@line 104 "sidh.c"
- STACKTOP = sp;return ($39|0); //@line 104 "sidh.c"
+ $0 = 6; //@line 78 "sidh.c"
+ $30 = $0; //@line 87 "sidh.c"
+ STACKTOP = sp;return ($30|0); //@line 87 "sidh.c"
+}
+function _sidhjs_validate($public_key) {
+ $public_key = $public_key|0;
+ var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $2 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $is_alice = 0;
+ var $valid = 0, $validate_status = 0, label = 0, sp = 0;
+ sp = STACKTOP;
+ STACKTOP = STACKTOP + 32|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
+ $valid = sp + 16|0;
+ $1 = $public_key;
+ $2 = HEAP32[4728>>2]|0; //@line 93 "sidh.c"
+ $3 = $1; //@line 93 "sidh.c"
+ $4 = (($3) + ($2)|0); //@line 93 "sidh.c"
+ $5 = HEAP8[$4>>0]|0; //@line 93 "sidh.c"
+ $6 = $5&255; //@line 93 "sidh.c"
+ $is_alice = $6; //@line 93 "sidh.c"
+ $7 = $is_alice; //@line 95 "sidh.c"
+ $8 = ($7|0)!=(0); //@line 95 "sidh.c"
+ $9 = $1; //@line 96 "sidh.c"
+ $10 = HEAP32[4736>>2]|0; //@line 96 "sidh.c"
+ if ($8) {
+  $11 = (_Validate_PKA($9,$valid,$10)|0); //@line 96 "sidh.c"
+  $validate_status = $11; //@line 96 "sidh.c"
+ } else {
+  $12 = (_Validate_PKB($9,$valid,$10)|0); //@line 99 "sidh.c"
+  $validate_status = $12; //@line 99 "sidh.c"
+ }
+ $13 = $validate_status; //@line 102 "sidh.c"
+ $14 = ($13|0)!=(0); //@line 102 "sidh.c"
+ if ($14) {
+  $15 = $validate_status; //@line 103 "sidh.c"
+  $0 = $15; //@line 103 "sidh.c"
+  $18 = $0; //@line 110 "sidh.c"
+  STACKTOP = sp;return ($18|0); //@line 110 "sidh.c"
+ }
+ $16 = HEAP8[$valid>>0]|0; //@line 105 "sidh.c"
+ $17 = $16&1; //@line 105 "sidh.c"
+ if ($17) {
+  $0 = 0; //@line 109 "sidh.c"
+  $18 = $0; //@line 110 "sidh.c"
+  STACKTOP = sp;return ($18|0); //@line 110 "sidh.c"
+ } else {
+  $0 = 8; //@line 106 "sidh.c"
+  $18 = $0; //@line 110 "sidh.c"
+  STACKTOP = sp;return ($18|0); //@line 110 "sidh.c"
+ }
+ return (0)|0;
 }
 function ___errno_location() {
  var $$0 = 0, $0 = 0, $1 = 0, $2 = 0, $3 = 0, $4 = 0, label = 0, sp = 0;
@@ -13695,132 +13679,6 @@ function _memcpy(dest, src, num) {
 }
 
   
-function dynCall_iiii(index,a1,a2,a3) {
-  index = index|0;
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return FUNCTION_TABLE_iiii[index&31](a1|0,a2|0,a3|0)|0;
-}
-
-
-function jsCall_iiii_0(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(0,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function jsCall_iiii_1(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(1,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function jsCall_iiii_2(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(2,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function jsCall_iiii_3(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(3,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function jsCall_iiii_4(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(4,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function jsCall_iiii_5(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(5,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function jsCall_iiii_6(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(6,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function jsCall_iiii_7(a1,a2,a3) {
-  a1=a1|0; a2=a2|0; a3=a3|0;
-  return jsCall_iiii(7,a1|0,a2|0,a3|0)|0;
-}
-
-
-
-function dynCall_iiiii(index,a1,a2,a3,a4) {
-  index = index|0;
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return FUNCTION_TABLE_iiiii[index&31](a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-function jsCall_iiiii_0(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(0,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
-function jsCall_iiiii_1(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(1,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
-function jsCall_iiiii_2(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(2,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
-function jsCall_iiiii_3(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(3,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
-function jsCall_iiiii_4(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(4,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
-function jsCall_iiiii_5(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(5,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
-function jsCall_iiiii_6(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(6,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
-function jsCall_iiiii_7(a1,a2,a3,a4) {
-  a1=a1|0; a2=a2|0; a3=a3|0; a4=a4|0;
-  return jsCall_iiiii(7,a1|0,a2|0,a3|0,a4|0)|0;
-}
-
-
-
 function dynCall_iii(index,a1,a2) {
   index = index|0;
   a1=a1|0; a2=a2|0;
@@ -13883,217 +13741,81 @@ function jsCall_iii_7(a1,a2) {
 }
 
 
-function b1(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(0);return 0;
-}
-function b2(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(9);return 0;
-}
-function b3(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(10);return 0;
-}
-function b4(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(11);return 0;
-}
-function b5(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(12);return 0;
-}
-function b6(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(13);return 0;
-}
-function b7(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(14);return 0;
-}
-function b8(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(15);return 0;
-}
-function b9(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(16);return 0;
-}
-function b10(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(17);return 0;
-}
-function b11(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(20);return 0;
-}
-function b12(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(21);return 0;
-}
-function b13(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(22);return 0;
-}
-function b14(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(23);return 0;
-}
-function b15(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(24);return 0;
-}
-function b16(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(25);return 0;
-}
-function b17(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(26);return 0;
-}
-function b18(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(27);return 0;
-}
-function b19(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(28);return 0;
-}
-function b20(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(29);return 0;
-}
-function b21(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(30);return 0;
-}
-function b22(p0,p1,p2) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0; nullFunc_iiii(31);return 0;
-}
-function b24(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(0);return 0;
-}
-function b25(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(9);return 0;
-}
-function b26(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(10);return 0;
-}
-function b27(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(11);return 0;
-}
-function b28(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(12);return 0;
-}
-function b29(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(13);return 0;
-}
-function b30(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(14);return 0;
-}
-function b31(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(15);return 0;
-}
-function b32(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(16);return 0;
-}
-function b33(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(17);return 0;
-}
-function b34(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(20);return 0;
-}
-function b35(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(21);return 0;
-}
-function b36(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(22);return 0;
-}
-function b37(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(23);return 0;
-}
-function b38(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(24);return 0;
-}
-function b39(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(25);return 0;
-}
-function b40(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(26);return 0;
-}
-function b41(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(27);return 0;
-}
-function b42(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(28);return 0;
-}
-function b43(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(29);return 0;
-}
-function b44(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(30);return 0;
-}
-function b45(p0,p1,p2,p3) {
- p0 = p0|0;p1 = p1|0;p2 = p2|0;p3 = p3|0; nullFunc_iiiii(31);return 0;
-}
-function b47(p0,p1) {
+function b1(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(0);return 0;
 }
-function b48(p0,p1) {
+function b2(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(9);return 0;
 }
-function b49(p0,p1) {
+function b3(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(10);return 0;
 }
-function b50(p0,p1) {
+function b4(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(11);return 0;
 }
-function b51(p0,p1) {
+function b5(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(12);return 0;
 }
-function b52(p0,p1) {
+function b6(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(13);return 0;
 }
-function b53(p0,p1) {
+function b7(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(14);return 0;
 }
-function b54(p0,p1) {
+function b8(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(15);return 0;
 }
-function b55(p0,p1) {
+function b9(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(16);return 0;
 }
-function b56(p0,p1) {
+function b10(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(17);return 0;
 }
-function b57(p0,p1) {
+function b11(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(19);return 0;
 }
-function b58(p0,p1) {
+function b12(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(20);return 0;
 }
-function b59(p0,p1) {
+function b13(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(21);return 0;
 }
-function b60(p0,p1) {
+function b14(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(22);return 0;
 }
-function b61(p0,p1) {
+function b15(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(23);return 0;
 }
-function b62(p0,p1) {
+function b16(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(24);return 0;
 }
-function b63(p0,p1) {
+function b17(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(25);return 0;
 }
-function b64(p0,p1) {
+function b18(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(26);return 0;
 }
-function b65(p0,p1) {
+function b19(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(27);return 0;
 }
-function b66(p0,p1) {
+function b20(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(28);return 0;
 }
-function b67(p0,p1) {
+function b21(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(29);return 0;
 }
-function b68(p0,p1) {
+function b22(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(30);return 0;
 }
-function b69(p0,p1) {
+function b23(p0,p1) {
  p0 = p0|0;p1 = p1|0; nullFunc_iii(31);return 0;
 }
 
 // EMSCRIPTEN_END_FUNCS
-var FUNCTION_TABLE_iiii = [b1,jsCall_iiii_0,jsCall_iiii_1,jsCall_iiii_2,jsCall_iiii_3,jsCall_iiii_4,jsCall_iiii_5,jsCall_iiii_6,jsCall_iiii_7,b2,b3,b4,b5,b6,b7,b8,b9,b10,_Validate_PKB,_Validate_PKA,b11,b12,b13,b14,b15,b16,b17,b18,b19
-,b20,b21,b22];
-var FUNCTION_TABLE_iiiii = [b24,jsCall_iiiii_0,jsCall_iiiii_1,jsCall_iiiii_2,jsCall_iiiii_3,jsCall_iiiii_4,jsCall_iiiii_5,jsCall_iiiii_6,jsCall_iiiii_7,b25,b26,b27,b28,b29,b30,b31,b32,b33,_SecretAgreement_A,_SecretAgreement_B,b34,b35,b36,b37,b38,b39,b40,b41,b42
-,b43,b44,b45];
-var FUNCTION_TABLE_iii = [b47,jsCall_iii_0,jsCall_iii_1,jsCall_iii_2,jsCall_iii_3,jsCall_iii_4,jsCall_iii_5,jsCall_iii_6,jsCall_iii_7,b48,b49,b50,b51,b52,b53,b54,b55,b56,_sidhjs_randombytes,b57,b58,b59,b60,b61,b62,b63,b64,b65,b66
-,b67,b68,b69];
+var FUNCTION_TABLE_iii = [b1,jsCall_iii_0,jsCall_iii_1,jsCall_iii_2,jsCall_iii_3,jsCall_iii_4,jsCall_iii_5,jsCall_iii_6,jsCall_iii_7,b2,b3,b4,b5,b6,b7,b8,b9,b10,_sidhjs_randombytes,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20
+,b21,b22,b23];
 
-  return { _sidhjs_secret: _sidhjs_secret, _free: _free, _sidhjs_public_key_bytes: _sidhjs_public_key_bytes, _sidhjs_private_key_bytes: _sidhjs_private_key_bytes, _sidhjs_secret_bytes: _sidhjs_secret_bytes, _memset: _memset, _malloc: _malloc, _memcpy: _memcpy, _sidhjs_keypair: _sidhjs_keypair, _sidhjs_init: _sidhjs_init, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_iiii: dynCall_iiii, dynCall_iiiii: dynCall_iiiii, dynCall_iii: dynCall_iii };
+  return { _sidhjs_secret: _sidhjs_secret, _free: _free, _sidhjs_public_key_bytes: _sidhjs_public_key_bytes, _sidhjs_private_key_bytes: _sidhjs_private_key_bytes, _sidhjs_secret_bytes: _sidhjs_secret_bytes, _memset: _memset, _malloc: _malloc, _memcpy: _memcpy, _sidhjs_validate: _sidhjs_validate, _sidhjs_keypair: _sidhjs_keypair, _sidhjs_init: _sidhjs_init, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_iii: dynCall_iii };
 })
 // EMSCRIPTEN_END_ASM
 (Module.asmGlobalArg, Module.asmLibraryArg, buffer);
@@ -14144,6 +13866,12 @@ assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. w
 assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
 return real__sidhjs_init.apply(null, arguments);
 };
+
+var real__sidhjs_validate = asm["_sidhjs_validate"]; asm["_sidhjs_validate"] = function() {
+assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+return real__sidhjs_validate.apply(null, arguments);
+};
 var _sidhjs_private_key_bytes = Module["_sidhjs_private_key_bytes"] = asm["_sidhjs_private_key_bytes"];
 var _free = Module["_free"] = asm["_free"];
 var runPostSets = Module["runPostSets"] = asm["runPostSets"];
@@ -14155,8 +13883,7 @@ var _malloc = Module["_malloc"] = asm["_malloc"];
 var _memcpy = Module["_memcpy"] = asm["_memcpy"];
 var _sidhjs_keypair = Module["_sidhjs_keypair"] = asm["_sidhjs_keypair"];
 var _sidhjs_init = Module["_sidhjs_init"] = asm["_sidhjs_init"];
-var dynCall_iiii = Module["dynCall_iiii"] = asm["dynCall_iiii"];
-var dynCall_iiiii = Module["dynCall_iiiii"] = asm["dynCall_iiiii"];
+var _sidhjs_validate = Module["_sidhjs_validate"] = asm["_sidhjs_validate"];
 var dynCall_iii = Module["dynCall_iii"] = asm["dynCall_iii"];
 ;
 
@@ -14476,6 +14203,19 @@ var sidh	= {
 			dataFree(publicKeyBuffer);
 			dataFree(privateKeyBuffer);
 			dataFree(secretBuffer);
+		}
+	},
+
+	validate: function (publicKey) {
+		var publicKeyBuffer		= Module._malloc(sidh.publicKeyLength);
+
+		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+
+		try {
+			return Module._sidhjs_validate(publicKeyBuffer) === 0;
+		}
+		finally {
+			dataFree(publicKeyBuffer);
 		}
 	}
 };

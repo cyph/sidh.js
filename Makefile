@@ -28,6 +28,7 @@ all:
 				'"'"'_sidhjs_init'"'"', \
 				'"'"'_sidhjs_keypair'"'"', \
 				'"'"'_sidhjs_secret'"'"', \
+				'"'"'_sidhjs_validate'"'"', \
 				'"'"'_sidhjs_public_key_bytes'"'"', \
 				'"'"'_sidhjs_private_key_bytes'"'"', \
 				'"'"'_sidhjs_secret_bytes'"'"' \
