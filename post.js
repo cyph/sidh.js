@@ -82,19 +82,6 @@ var sidh	= {
 			dataFree(privateKeyBuffer);
 			dataFree(secretBuffer);
 		}
-	},
-
-	validate: function (publicKey) {
-		var publicKeyBuffer		= Module._malloc(sidh.publicKeyLength);
-
-		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
-
-		try {
-			return Module._sidhjs_validate(publicKeyBuffer) === 0;
-		}
-		finally {
-			dataFree(publicKeyBuffer);
-		}
 	}
 };
 
