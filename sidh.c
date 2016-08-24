@@ -1,14 +1,18 @@
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "SIDH_internal.h"
 #include "SIDH.h"
 #include "randombytes.h"
+#include "utils.h"
 
 
 PCurveIsogenyStruct isogeny;
 
-long public_key_bytes	= 768;
-long private_key_bytes	= 48;
+long public_key_bytes		= 768;
+long full_public_key_bytes	= 1536;
+long private_key_bytes		= 48;
+long full_private_key_bytes	= 96;
 
 
 CRYPTO_STATUS sidhjs_randombytes (unsigned int nbytes, unsigned char* random_array) {
@@ -29,11 +33,11 @@ CRYPTO_STATUS sidhjs_init () {
 }
 
 long sidhjs_public_key_bytes () {
-	return public_key_bytes + 1;
+	return full_public_key_bytes;
 }
 
 long sidhjs_private_key_bytes () {
-	return private_key_bytes + 1;
+	return full_public_key_bytes + full_private_key_bytes;
 }
 
 long sidhjs_secret_bytes () {
@@ -41,54 +45,63 @@ long sidhjs_secret_bytes () {
 }
 
 CRYPTO_STATUS sidhjs_keypair (
-	int is_alice,
-	uint8_t public_key[],
-	uint8_t private_key[]
+	uint8_t* public_key,
+	uint8_t* private_key
 ) {
-	CRYPTO_STATUS status;
+	CRYPTO_STATUS status	= KeyGeneration_A(private_key, public_key, isogeny);
 
-	if (is_alice) {
-		status	= KeyGeneration_A(private_key, public_key, isogeny);
-
-		public_key[public_key_bytes]	= 1;
-		private_key[private_key_bytes]	= 1;
-	}
-	else {
-		status	= KeyGeneration_B(private_key, public_key, isogeny);
-
-		public_key[public_key_bytes]	= 0;
-		private_key[private_key_bytes]	= 0;
+	if (status != CRYPTO_SUCCESS) {
+		return status;
 	}
 
-	return status;
+	status	= KeyGeneration_B(
+		private_key + private_key_bytes,
+		public_key + public_key_bytes,
+		isogeny
+	);
+
+	if (status != CRYPTO_SUCCESS) {
+		return status;
+	}
+
+	memcpy(
+		private_key + full_private_key_bytes,
+		public_key,
+		full_public_key_bytes
+	);
+
+	return CRYPTO_SUCCESS;
 }
 
 CRYPTO_STATUS sidhjs_secret (
-	uint8_t public_key[],
-	uint8_t private_key[],
+	uint8_t* public_key,
+	uint8_t* private_key,
 	uint8_t* secret
 ) {
 	bool valid;
 	CRYPTO_STATUS (*validate)(unsigned char* pk, bool* v, PCurveIsogenyStruct iso);
 	CRYPTO_STATUS (*secret_agreement)(unsigned char* sk, unsigned char* pk, unsigned char* s, PCurveIsogenyStruct iso);
 
-	int is_public_alice		= public_key[public_key_bytes];
-	int is_private_alice	= private_key[private_key_bytes];
+	int is_alice	= sodium_compare(
+		public_key,
+		private_key + full_private_key_bytes,
+		full_public_key_bytes
+	);
 
-	if (
-		(is_public_alice && is_private_alice) ||
-		(!is_public_alice && !is_private_alice)
-	) {
-		return CRYPTO_ERROR_INVALID_PARAMETER;
-	}
-
-	if (is_private_alice) {
+	if (is_alice == 1) {
 		validate			= Validate_PKB;
 		secret_agreement	= SecretAgreement_A;
+
+		public_key += public_key_bytes;
 	}
-	else {
+	else if (is_alice == -1) {
 		validate			= Validate_PKA;
 		secret_agreement	= SecretAgreement_B;
+
+		private_key += private_key_bytes;
+	}
+	else {
+		return CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
 	CRYPTO_STATUS validate_status	= validate(public_key, &valid, isogeny);

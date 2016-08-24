@@ -31,17 +31,12 @@ var sidh	= {
 	privateKeyLength: Module._sidhjs_private_key_bytes(),
 	secretLength: Module._sidhjs_secret_bytes(),
 
-	keyPair: function (isAlice) {
-		if (typeof isAlice !== 'boolean') {
-			throw 'Must specify whether this key pair is for Alice.';
-		}
-
+	keyPair: function () {
 		var publicKeyBuffer		= Module._malloc(sidh.publicKeyLength);
 		var privateKeyBuffer	= Module._malloc(sidh.privateKeyLength);
 
 		try {
 			var returnValue	= Module._sidhjs_keypair(
-				isAlice ? 1 : 0,
 				publicKeyBuffer,
 				privateKeyBuffer
 			);

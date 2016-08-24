@@ -21,6 +21,7 @@ all:
 			-s RESERVED_FUNCTION_POINTERS=8 -s NO_FILESYSTEM=1 \
 			-Ilibsodium/src/libsodium/include/sodium \
 			-ISIDH_v1.0 \
+			libsodium/src/libsodium/sodium/utils.c \
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$(ls SIDH_v1.0/*.c SIDH_v1.0/generic/*.c) \
 			sidh.c \
