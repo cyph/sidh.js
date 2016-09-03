@@ -10266,154 +10266,223 @@ function _sidhjs_init() {
  $2 = (_SIDH_curve_initialize($1,18,8)|0); //@line 28 "sidh.c"
  return ($2|0); //@line 28 "sidh.c"
 }
+function _sidhjs_public_key_bytes_base() {
+ var $0 = 0, label = 0, sp = 0;
+ sp = STACKTOP;
+ $0 = HEAP32[4728>>2]|0; //@line 36 "sidh.c"
+ return ($0|0); //@line 36 "sidh.c"
+}
 function _sidhjs_public_key_bytes() {
  var $0 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = HEAP32[4732>>2]|0; //@line 36 "sidh.c"
- return ($0|0); //@line 36 "sidh.c"
+ $0 = HEAP32[4732>>2]|0; //@line 40 "sidh.c"
+ return ($0|0); //@line 40 "sidh.c"
+}
+function _sidhjs_private_key_bytes_base() {
+ var $0 = 0, label = 0, sp = 0;
+ sp = STACKTOP;
+ $0 = HEAP32[4736>>2]|0; //@line 44 "sidh.c"
+ return ($0|0); //@line 44 "sidh.c"
 }
 function _sidhjs_private_key_bytes() {
  var $0 = 0, $1 = 0, $2 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = HEAP32[4732>>2]|0; //@line 40 "sidh.c"
- $1 = HEAP32[4740>>2]|0; //@line 40 "sidh.c"
- $2 = (($0) + ($1))|0; //@line 40 "sidh.c"
- return ($2|0); //@line 40 "sidh.c"
+ $0 = HEAP32[4732>>2]|0; //@line 48 "sidh.c"
+ $1 = HEAP32[4740>>2]|0; //@line 48 "sidh.c"
+ $2 = (($0) + ($1))|0; //@line 48 "sidh.c"
+ return ($2|0); //@line 48 "sidh.c"
 }
 function _sidhjs_secret_bytes() {
  var label = 0, sp = 0;
  sp = STACKTOP;
- return 192; //@line 44 "sidh.c"
+ return 192; //@line 52 "sidh.c"
 }
-function _sidhjs_keypair($public_key,$private_key) {
+function _sidhjs_keypair_base($public_key,$private_key,$is_alice) {
  $public_key = $public_key|0;
  $private_key = $private_key|0;
- var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $25 = 0, $26 = 0;
- var $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $status = 0, label = 0, sp = 0;
+ $is_alice = $is_alice|0;
+ var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $2 = 0, $3 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, label = 0, sp = 0;
  sp = STACKTOP;
  STACKTOP = STACKTOP + 16|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
  $1 = $public_key;
  $2 = $private_key;
- $3 = $2; //@line 51 "sidh.c"
- $4 = $1; //@line 51 "sidh.c"
- $5 = HEAP32[4744>>2]|0; //@line 51 "sidh.c"
- $6 = (_KeyGeneration_A($3,$4,$5)|0); //@line 51 "sidh.c"
- $status = $6; //@line 51 "sidh.c"
- $7 = $status; //@line 53 "sidh.c"
- $8 = ($7|0)!=(0); //@line 53 "sidh.c"
- if ($8) {
-  $9 = $status; //@line 54 "sidh.c"
-  $0 = $9; //@line 54 "sidh.c"
-  $26 = $0; //@line 74 "sidh.c"
-  STACKTOP = sp;return ($26|0); //@line 74 "sidh.c"
- }
- $10 = $2; //@line 58 "sidh.c"
- $11 = HEAP32[4736>>2]|0; //@line 58 "sidh.c"
- $12 = (($10) + ($11)|0); //@line 58 "sidh.c"
- $13 = $1; //@line 59 "sidh.c"
- $14 = HEAP32[4728>>2]|0; //@line 59 "sidh.c"
- $15 = (($13) + ($14)|0); //@line 59 "sidh.c"
- $16 = HEAP32[4744>>2]|0; //@line 60 "sidh.c"
- $17 = (_KeyGeneration_B($12,$15,$16)|0); //@line 57 "sidh.c"
- $status = $17; //@line 57 "sidh.c"
- $18 = $status; //@line 63 "sidh.c"
- $19 = ($18|0)!=(0); //@line 63 "sidh.c"
- if ($19) {
-  $20 = $status; //@line 64 "sidh.c"
-  $0 = $20; //@line 64 "sidh.c"
-  $26 = $0; //@line 74 "sidh.c"
-  STACKTOP = sp;return ($26|0); //@line 74 "sidh.c"
+ $3 = $is_alice;
+ $4 = $3; //@line 61 "sidh.c"
+ $5 = ($4|0)!=(0); //@line 61 "sidh.c"
+ $6 = $2; //@line 62 "sidh.c"
+ $7 = $1; //@line 62 "sidh.c"
+ $8 = HEAP32[4744>>2]|0; //@line 62 "sidh.c"
+ if ($5) {
+  $9 = (_KeyGeneration_A($6,$7,$8)|0); //@line 62 "sidh.c"
+  $0 = $9; //@line 62 "sidh.c"
+  $11 = $0; //@line 67 "sidh.c"
+  STACKTOP = sp;return ($11|0); //@line 67 "sidh.c"
  } else {
-  $21 = $2; //@line 68 "sidh.c"
-  $22 = HEAP32[4740>>2]|0; //@line 68 "sidh.c"
-  $23 = (($21) + ($22)|0); //@line 68 "sidh.c"
-  $24 = $1; //@line 69 "sidh.c"
-  $25 = HEAP32[4732>>2]|0; //@line 70 "sidh.c"
-  _memcpy(($23|0),($24|0),($25|0))|0; //@line 67 "sidh.c"
-  $0 = 0; //@line 73 "sidh.c"
-  $26 = $0; //@line 74 "sidh.c"
-  STACKTOP = sp;return ($26|0); //@line 74 "sidh.c"
+  $10 = (_KeyGeneration_B($6,$7,$8)|0); //@line 65 "sidh.c"
+  $0 = $10; //@line 65 "sidh.c"
+  $11 = $0; //@line 67 "sidh.c"
+  STACKTOP = sp;return ($11|0); //@line 67 "sidh.c"
  }
  return (0)|0;
+}
+function _sidhjs_keypair($public_key,$private_key) {
+ $public_key = $public_key|0;
+ $private_key = $private_key|0;
+ var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $3 = 0, $4 = 0;
+ var $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $status = 0, label = 0, sp = 0;
+ sp = STACKTOP;
+ STACKTOP = STACKTOP + 16|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
+ $1 = $public_key;
+ $2 = $private_key;
+ $3 = $1; //@line 73 "sidh.c"
+ $4 = $2; //@line 73 "sidh.c"
+ $5 = (_sidhjs_keypair_base($3,$4,1)|0); //@line 73 "sidh.c"
+ $status = $5; //@line 73 "sidh.c"
+ $6 = $status; //@line 75 "sidh.c"
+ $7 = ($6|0)!=(0); //@line 75 "sidh.c"
+ if ($7) {
+  $8 = $status; //@line 76 "sidh.c"
+  $0 = $8; //@line 76 "sidh.c"
+  $24 = $0; //@line 96 "sidh.c"
+  STACKTOP = sp;return ($24|0); //@line 96 "sidh.c"
+ }
+ $9 = $1; //@line 80 "sidh.c"
+ $10 = HEAP32[4728>>2]|0; //@line 80 "sidh.c"
+ $11 = (($9) + ($10)|0); //@line 80 "sidh.c"
+ $12 = $2; //@line 81 "sidh.c"
+ $13 = HEAP32[4736>>2]|0; //@line 81 "sidh.c"
+ $14 = (($12) + ($13)|0); //@line 81 "sidh.c"
+ $15 = (_sidhjs_keypair_base($11,$14,0)|0); //@line 79 "sidh.c"
+ $status = $15; //@line 79 "sidh.c"
+ $16 = $status; //@line 85 "sidh.c"
+ $17 = ($16|0)!=(0); //@line 85 "sidh.c"
+ if ($17) {
+  $18 = $status; //@line 86 "sidh.c"
+  $0 = $18; //@line 86 "sidh.c"
+  $24 = $0; //@line 96 "sidh.c"
+  STACKTOP = sp;return ($24|0); //@line 96 "sidh.c"
+ } else {
+  $19 = $2; //@line 90 "sidh.c"
+  $20 = HEAP32[4740>>2]|0; //@line 90 "sidh.c"
+  $21 = (($19) + ($20)|0); //@line 90 "sidh.c"
+  $22 = $1; //@line 91 "sidh.c"
+  $23 = HEAP32[4732>>2]|0; //@line 92 "sidh.c"
+  _memcpy(($21|0),($22|0),($23|0))|0; //@line 89 "sidh.c"
+  $0 = 0; //@line 95 "sidh.c"
+  $24 = $0; //@line 96 "sidh.c"
+  STACKTOP = sp;return ($24|0); //@line 96 "sidh.c"
+ }
+ return (0)|0;
+}
+function _sidhjs_secret_base($public_key,$private_key,$secret,$is_alice,$should_validate) {
+ $public_key = $public_key|0;
+ $private_key = $private_key|0;
+ $secret = $secret|0;
+ $is_alice = $is_alice|0;
+ $should_validate = $should_validate|0;
+ var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $25 = 0, $3 = 0;
+ var $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $secret_agreement = 0, $valid = 0, $validate = 0, $validate_status = 0, label = 0, sp = 0;
+ sp = STACKTOP;
+ STACKTOP = STACKTOP + 48|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
+ $valid = sp + 36|0;
+ $1 = $public_key;
+ $2 = $private_key;
+ $3 = $secret;
+ $4 = $is_alice;
+ $5 = $should_validate;
+ $6 = $4; //@line 109 "sidh.c"
+ $7 = ($6|0)!=(0); //@line 109 "sidh.c"
+ if ($7) {
+  $validate = 18; //@line 110 "sidh.c"
+  $secret_agreement = 18; //@line 111 "sidh.c"
+ } else {
+  $validate = 19; //@line 114 "sidh.c"
+  $secret_agreement = 19; //@line 115 "sidh.c"
+ }
+ $8 = $5; //@line 118 "sidh.c"
+ $9 = ($8|0)!=(0); //@line 118 "sidh.c"
+ if ($9) {
+  $10 = $validate; //@line 120 "sidh.c"
+  $11 = $1; //@line 120 "sidh.c"
+  $12 = HEAP32[4744>>2]|0; //@line 120 "sidh.c"
+  $13 = (FUNCTION_TABLE_iiii[$10 & 31]($11,$valid,$12)|0); //@line 120 "sidh.c"
+  $validate_status = $13; //@line 120 "sidh.c"
+  $14 = $validate_status; //@line 122 "sidh.c"
+  $15 = ($14|0)!=(0); //@line 122 "sidh.c"
+  if ($15) {
+   $16 = $validate_status; //@line 123 "sidh.c"
+   $0 = $16; //@line 123 "sidh.c"
+   $25 = $0; //@line 131 "sidh.c"
+   STACKTOP = sp;return ($25|0); //@line 131 "sidh.c"
+  }
+  $17 = HEAP8[$valid>>0]|0; //@line 125 "sidh.c"
+  $18 = $17&1; //@line 125 "sidh.c"
+  if (!($18)) {
+   $0 = 8; //@line 126 "sidh.c"
+   $25 = $0; //@line 131 "sidh.c"
+   STACKTOP = sp;return ($25|0); //@line 131 "sidh.c"
+  }
+ }
+ $19 = $secret_agreement; //@line 130 "sidh.c"
+ $20 = $2; //@line 130 "sidh.c"
+ $21 = $1; //@line 130 "sidh.c"
+ $22 = $3; //@line 130 "sidh.c"
+ $23 = HEAP32[4744>>2]|0; //@line 130 "sidh.c"
+ $24 = (FUNCTION_TABLE_iiiii[$19 & 31]($20,$21,$22,$23)|0); //@line 130 "sidh.c"
+ $0 = $24; //@line 130 "sidh.c"
+ $25 = $0; //@line 131 "sidh.c"
+ STACKTOP = sp;return ($25|0); //@line 131 "sidh.c"
 }
 function _sidhjs_secret($public_key,$private_key,$secret) {
  $public_key = $public_key|0;
  $private_key = $private_key|0;
  $secret = $secret|0;
- var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $25 = 0, $26 = 0;
- var $27 = 0, $28 = 0, $29 = 0, $3 = 0, $30 = 0, $31 = 0, $32 = 0, $33 = 0, $34 = 0, $35 = 0, $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $is_alice = 0, $secret_agreement = 0, $valid = 0, $validate = 0;
- var $validate_status = 0, label = 0, sp = 0;
+ var $0 = 0, $1 = 0, $10 = 0, $11 = 0, $12 = 0, $13 = 0, $14 = 0, $15 = 0, $16 = 0, $17 = 0, $18 = 0, $19 = 0, $2 = 0, $20 = 0, $21 = 0, $22 = 0, $23 = 0, $24 = 0, $25 = 0, $3 = 0;
+ var $4 = 0, $5 = 0, $6 = 0, $7 = 0, $8 = 0, $9 = 0, $is_alice = 0, label = 0, sp = 0;
  sp = STACKTOP;
- STACKTOP = STACKTOP + 48|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
- $valid = sp + 32|0;
+ STACKTOP = STACKTOP + 32|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
  $1 = $public_key;
  $2 = $private_key;
  $3 = $secret;
- $4 = $1; //@line 86 "sidh.c"
- $5 = $2; //@line 87 "sidh.c"
- $6 = HEAP32[4740>>2]|0; //@line 87 "sidh.c"
- $7 = (($5) + ($6)|0); //@line 87 "sidh.c"
- $8 = HEAP32[4732>>2]|0; //@line 88 "sidh.c"
- $9 = (_sodium_compare($4,$7,$8)|0); //@line 85 "sidh.c"
- $is_alice = $9; //@line 85 "sidh.c"
- $10 = $is_alice; //@line 91 "sidh.c"
- $11 = ($10|0)==(1); //@line 91 "sidh.c"
+ $4 = $1; //@line 139 "sidh.c"
+ $5 = $2; //@line 140 "sidh.c"
+ $6 = HEAP32[4740>>2]|0; //@line 140 "sidh.c"
+ $7 = (($5) + ($6)|0); //@line 140 "sidh.c"
+ $8 = HEAP32[4732>>2]|0; //@line 141 "sidh.c"
+ $9 = (_sodium_compare($4,$7,$8)|0); //@line 138 "sidh.c"
+ $is_alice = $9; //@line 138 "sidh.c"
+ $10 = $is_alice; //@line 144 "sidh.c"
+ $11 = ($10|0)==(1); //@line 144 "sidh.c"
  do {
   if ($11) {
-   $validate = 18; //@line 92 "sidh.c"
-   $secret_agreement = 18; //@line 93 "sidh.c"
-   $12 = HEAP32[4728>>2]|0; //@line 95 "sidh.c"
-   $13 = $1; //@line 95 "sidh.c"
-   $14 = (($13) + ($12)|0); //@line 95 "sidh.c"
-   $1 = $14; //@line 95 "sidh.c"
+   $12 = HEAP32[4728>>2]|0; //@line 145 "sidh.c"
+   $13 = $1; //@line 145 "sidh.c"
+   $14 = (($13) + ($12)|0); //@line 145 "sidh.c"
+   $1 = $14; //@line 145 "sidh.c"
   } else {
-   $15 = $is_alice; //@line 97 "sidh.c"
-   $16 = ($15|0)==(-1); //@line 97 "sidh.c"
+   $15 = $is_alice; //@line 147 "sidh.c"
+   $16 = ($15|0)==(-1); //@line 147 "sidh.c"
    if ($16) {
-    $validate = 19; //@line 98 "sidh.c"
-    $secret_agreement = 19; //@line 99 "sidh.c"
-    $17 = HEAP32[4736>>2]|0; //@line 101 "sidh.c"
-    $18 = $2; //@line 101 "sidh.c"
-    $19 = (($18) + ($17)|0); //@line 101 "sidh.c"
-    $2 = $19; //@line 101 "sidh.c"
+    $is_alice = 0; //@line 148 "sidh.c"
+    $17 = HEAP32[4736>>2]|0; //@line 149 "sidh.c"
+    $18 = $2; //@line 149 "sidh.c"
+    $19 = (($18) + ($17)|0); //@line 149 "sidh.c"
+    $2 = $19; //@line 149 "sidh.c"
     break;
    }
-   $0 = 6; //@line 104 "sidh.c"
-   $35 = $0; //@line 117 "sidh.c"
-   STACKTOP = sp;return ($35|0); //@line 117 "sidh.c"
+   $0 = 6; //@line 152 "sidh.c"
+   $25 = $0; //@line 162 "sidh.c"
+   STACKTOP = sp;return ($25|0); //@line 162 "sidh.c"
   }
  } while(0);
- $20 = $validate; //@line 107 "sidh.c"
- $21 = $1; //@line 107 "sidh.c"
- $22 = HEAP32[4744>>2]|0; //@line 107 "sidh.c"
- $23 = (FUNCTION_TABLE_iiii[$20 & 31]($21,$valid,$22)|0); //@line 107 "sidh.c"
- $validate_status = $23; //@line 107 "sidh.c"
- $24 = $validate_status; //@line 109 "sidh.c"
- $25 = ($24|0)!=(0); //@line 109 "sidh.c"
- if ($25) {
-  $26 = $validate_status; //@line 110 "sidh.c"
-  $0 = $26; //@line 110 "sidh.c"
-  $35 = $0; //@line 117 "sidh.c"
-  STACKTOP = sp;return ($35|0); //@line 117 "sidh.c"
- }
- $27 = HEAP8[$valid>>0]|0; //@line 112 "sidh.c"
- $28 = $27&1; //@line 112 "sidh.c"
- if ($28) {
-  $29 = $secret_agreement; //@line 116 "sidh.c"
-  $30 = $2; //@line 116 "sidh.c"
-  $31 = $1; //@line 116 "sidh.c"
-  $32 = $3; //@line 116 "sidh.c"
-  $33 = HEAP32[4744>>2]|0; //@line 116 "sidh.c"
-  $34 = (FUNCTION_TABLE_iiiii[$29 & 31]($30,$31,$32,$33)|0); //@line 116 "sidh.c"
-  $0 = $34; //@line 116 "sidh.c"
-  $35 = $0; //@line 117 "sidh.c"
-  STACKTOP = sp;return ($35|0); //@line 117 "sidh.c"
- } else {
-  $0 = 8; //@line 113 "sidh.c"
-  $35 = $0; //@line 117 "sidh.c"
-  STACKTOP = sp;return ($35|0); //@line 117 "sidh.c"
- }
- return (0)|0;
+ $20 = $1; //@line 156 "sidh.c"
+ $21 = $2; //@line 157 "sidh.c"
+ $22 = $3; //@line 158 "sidh.c"
+ $23 = $is_alice; //@line 159 "sidh.c"
+ $24 = (_sidhjs_secret_base($20,$21,$22,$23,1)|0); //@line 155 "sidh.c"
+ $0 = $24; //@line 155 "sidh.c"
+ $25 = $0; //@line 162 "sidh.c"
+ STACKTOP = sp;return ($25|0); //@line 162 "sidh.c"
 }
 function ___errno_location() {
  var $$0 = 0, $0 = 0, $1 = 0, $2 = 0, $3 = 0, $4 = 0, label = 0, sp = 0;
@@ -14176,7 +14245,7 @@ var FUNCTION_TABLE_iiiii = [b24,jsCall_iiiii_0,jsCall_iiiii_1,jsCall_iiiii_2,jsC
 var FUNCTION_TABLE_iii = [b47,jsCall_iii_0,jsCall_iii_1,jsCall_iii_2,jsCall_iii_3,jsCall_iii_4,jsCall_iii_5,jsCall_iii_6,jsCall_iii_7,b48,b49,b50,b51,b52,b53,b54,b55,b56,_sidhjs_randombytes,b57,b58,b59,b60,b61,b62,b63,b64,b65,b66
 ,b67,b68,b69];
 
-  return { _sidhjs_secret: _sidhjs_secret, _free: _free, _sidhjs_public_key_bytes: _sidhjs_public_key_bytes, _sidhjs_private_key_bytes: _sidhjs_private_key_bytes, _sidhjs_secret_bytes: _sidhjs_secret_bytes, _memset: _memset, _malloc: _malloc, _memcpy: _memcpy, _sidhjs_keypair: _sidhjs_keypair, _sidhjs_init: _sidhjs_init, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_iiii: dynCall_iiii, dynCall_iiiii: dynCall_iiiii, dynCall_iii: dynCall_iii };
+  return { _sidhjs_secret: _sidhjs_secret, _free: _free, _sidhjs_public_key_bytes: _sidhjs_public_key_bytes, _sidhjs_private_key_bytes: _sidhjs_private_key_bytes, _sidhjs_secret_bytes: _sidhjs_secret_bytes, _memset: _memset, _malloc: _malloc, _memcpy: _memcpy, _sidhjs_secret_base: _sidhjs_secret_base, _sidhjs_keypair: _sidhjs_keypair, _sidhjs_init: _sidhjs_init, _sidhjs_private_key_bytes_base: _sidhjs_private_key_bytes_base, _sidhjs_keypair_base: _sidhjs_keypair_base, _sidhjs_public_key_bytes_base: _sidhjs_public_key_bytes_base, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_iiii: dynCall_iiii, dynCall_iiiii: dynCall_iiiii, dynCall_iii: dynCall_iii };
 })
 // EMSCRIPTEN_END_ASM
 (Module.asmGlobalArg, Module.asmLibraryArg, buffer);
@@ -14216,6 +14285,12 @@ assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it a
 return real__malloc.apply(null, arguments);
 };
 
+var real__sidhjs_secret_base = asm["_sidhjs_secret_base"]; asm["_sidhjs_secret_base"] = function() {
+assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+return real__sidhjs_secret_base.apply(null, arguments);
+};
+
 var real__sidhjs_keypair = asm["_sidhjs_keypair"]; asm["_sidhjs_keypair"] = function() {
 assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
 assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -14227,6 +14302,24 @@ assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. w
 assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
 return real__sidhjs_init.apply(null, arguments);
 };
+
+var real__sidhjs_private_key_bytes_base = asm["_sidhjs_private_key_bytes_base"]; asm["_sidhjs_private_key_bytes_base"] = function() {
+assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+return real__sidhjs_private_key_bytes_base.apply(null, arguments);
+};
+
+var real__sidhjs_keypair_base = asm["_sidhjs_keypair_base"]; asm["_sidhjs_keypair_base"] = function() {
+assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+return real__sidhjs_keypair_base.apply(null, arguments);
+};
+
+var real__sidhjs_public_key_bytes_base = asm["_sidhjs_public_key_bytes_base"]; asm["_sidhjs_public_key_bytes_base"] = function() {
+assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+return real__sidhjs_public_key_bytes_base.apply(null, arguments);
+};
 var _sidhjs_private_key_bytes = Module["_sidhjs_private_key_bytes"] = asm["_sidhjs_private_key_bytes"];
 var _free = Module["_free"] = asm["_free"];
 var runPostSets = Module["runPostSets"] = asm["runPostSets"];
@@ -14236,8 +14329,12 @@ var _memset = Module["_memset"] = asm["_memset"];
 var _sidhjs_secret_bytes = Module["_sidhjs_secret_bytes"] = asm["_sidhjs_secret_bytes"];
 var _malloc = Module["_malloc"] = asm["_malloc"];
 var _memcpy = Module["_memcpy"] = asm["_memcpy"];
+var _sidhjs_secret_base = Module["_sidhjs_secret_base"] = asm["_sidhjs_secret_base"];
 var _sidhjs_keypair = Module["_sidhjs_keypair"] = asm["_sidhjs_keypair"];
 var _sidhjs_init = Module["_sidhjs_init"] = asm["_sidhjs_init"];
+var _sidhjs_private_key_bytes_base = Module["_sidhjs_private_key_bytes_base"] = asm["_sidhjs_private_key_bytes_base"];
+var _sidhjs_keypair_base = Module["_sidhjs_keypair_base"] = asm["_sidhjs_keypair_base"];
+var _sidhjs_public_key_bytes_base = Module["_sidhjs_public_key_bytes_base"] = asm["_sidhjs_public_key_bytes_base"];
 var dynCall_iiii = Module["dynCall_iiii"] = asm["dynCall_iiii"];
 var dynCall_iiiii = Module["dynCall_iiiii"] = asm["dynCall_iiiii"];
 var dynCall_iii = Module["dynCall_iii"] = asm["dynCall_iii"];
@@ -14554,6 +14651,63 @@ var sidh	= {
 			dataFree(publicKeyBuffer);
 			dataFree(privateKeyBuffer);
 			dataFree(secretBuffer);
+		}
+	},
+
+	base: {
+		publicKeyLength: Module._sidhjs_public_key_bytes_base(),
+		privateKeyLength: Module._sidhjs_private_key_bytes_base(),
+		secretLength: Module._sidhjs_secret_bytes(),
+
+		keyPair: function (isAlice) {
+			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyLength);
+			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyLength);
+
+			try {
+				var returnValue	= Module._sidhjs_keypair_base(
+					publicKeyBuffer,
+					privateKeyBuffer,
+					isAlice ? 1 : 0
+				);
+
+				return dataReturn(returnValue, {
+					publicKey: dataResult(publicKeyBuffer, sidh.base.publicKeyLength),
+					privateKey: dataResult(privateKeyBuffer, sidh.base.privateKeyLength)
+				});
+			}
+			finally {
+				dataFree(publicKeyBuffer);
+				dataFree(privateKeyBuffer);
+			}
+		},
+
+		secret: function (publicKey, privateKey, isAlice, shouldValidate) {
+			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyLength);
+			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyLength);
+			var secretBuffer		= Module._malloc(sidh.base.secretLength);
+
+			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+			Module.writeArrayToMemory(privateKey, privateKeyBuffer);
+
+			try {
+				var returnValue	= Module._sidhjs_secret_base(
+					publicKeyBuffer,
+					privateKeyBuffer,
+					secretBuffer,
+					isAlice ? 1 : 0,
+					shouldValidate ? 1 : 0
+				);
+
+				return dataReturn(
+					returnValue,
+					dataResult(secretBuffer, sidh.base.secretLength)
+				);
+			}
+			finally {
+				dataFree(publicKeyBuffer);
+				dataFree(privateKeyBuffer);
+				dataFree(secretBuffer);
+			}
 		}
 	}
 };

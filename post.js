@@ -77,6 +77,63 @@ var sidh	= {
 			dataFree(privateKeyBuffer);
 			dataFree(secretBuffer);
 		}
+	},
+
+	base: {
+		publicKeyLength: Module._sidhjs_public_key_bytes_base(),
+		privateKeyLength: Module._sidhjs_private_key_bytes_base(),
+		secretLength: Module._sidhjs_secret_bytes(),
+
+		keyPair: function (isAlice) {
+			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyLength);
+			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyLength);
+
+			try {
+				var returnValue	= Module._sidhjs_keypair_base(
+					publicKeyBuffer,
+					privateKeyBuffer,
+					isAlice ? 1 : 0
+				);
+
+				return dataReturn(returnValue, {
+					publicKey: dataResult(publicKeyBuffer, sidh.base.publicKeyLength),
+					privateKey: dataResult(privateKeyBuffer, sidh.base.privateKeyLength)
+				});
+			}
+			finally {
+				dataFree(publicKeyBuffer);
+				dataFree(privateKeyBuffer);
+			}
+		},
+
+		secret: function (publicKey, privateKey, isAlice, shouldValidate) {
+			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyLength);
+			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyLength);
+			var secretBuffer		= Module._malloc(sidh.base.secretLength);
+
+			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+			Module.writeArrayToMemory(privateKey, privateKeyBuffer);
+
+			try {
+				var returnValue	= Module._sidhjs_secret_base(
+					publicKeyBuffer,
+					privateKeyBuffer,
+					secretBuffer,
+					isAlice ? 1 : 0,
+					shouldValidate ? 1 : 0
+				);
+
+				return dataReturn(
+					returnValue,
+					dataResult(secretBuffer, sidh.base.secretLength)
+				);
+			}
+			finally {
+				dataFree(publicKeyBuffer);
+				dataFree(privateKeyBuffer);
+				dataFree(secretBuffer);
+			}
+		}
 	}
 };
 

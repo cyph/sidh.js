@@ -27,9 +27,13 @@ all:
 			sidh.c \
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_sidhjs_init'"'"', \
+				'"'"'_sidhjs_keypair_base'"'"', \
 				'"'"'_sidhjs_keypair'"'"', \
+				'"'"'_sidhjs_secret_base'"'"', \
 				'"'"'_sidhjs_secret'"'"', \
+				'"'"'_sidhjs_public_key_bytes_base'"'"', \
 				'"'"'_sidhjs_public_key_bytes'"'"', \
+				'"'"'_sidhjs_private_key_bytes_base'"'"', \
 				'"'"'_sidhjs_private_key_bytes'"'"', \
 				'"'"'_sidhjs_secret_bytes'"'"' \
 			]\" \
