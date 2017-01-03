@@ -12,11 +12,21 @@ The parameters are configured to 128-bit strength. (More specifically, the secur
 
 ## Example Usage
 
-	const localKeyPair	= sidh.keyPair();
-	const remoteKeyPair	= sidh.keyPair();
+	const localKeyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		sidh.keyPair()
+	;
 
-	const localSecret	= sidh.secret(remoteKeyPair.publicKey, localKeyPair.privateKey);
-	const remoteSecret	= sidh.secret(localKeyPair.publicKey, remoteKeyPair.privateKey);
+	const remoteKeyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		sidh.keyPair()
+	;
+
+	const localSecret /*: Uint8Array */ =
+		sidh.secret(remoteKeyPair.publicKey, localKeyPair.privateKey)
+	;
+
+	const remoteSecret /*: Uint8Array */ =
+		sidh.secret(localKeyPair.publicKey, remoteKeyPair.privateKey)
+	;
 
 	// localSecret and remoteSecret are equal
 
