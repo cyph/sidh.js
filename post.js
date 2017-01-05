@@ -27,13 +27,18 @@ Module._sidhjs_init();
 
 
 var sidh	= {
+	publicKeyBytes: Module._sidhjs_public_key_bytes(),
+	privateKeyBytes: Module._sidhjs_private_key_bytes(),
+	bytes: Module._sidhjs_secret_bytes(),
+
+	/* Backwards compatibility */
 	publicKeyLength: Module._sidhjs_public_key_bytes(),
 	privateKeyLength: Module._sidhjs_private_key_bytes(),
 	secretLength: Module._sidhjs_secret_bytes(),
 
 	keyPair: function () {
-		var publicKeyBuffer		= Module._malloc(sidh.publicKeyLength);
-		var privateKeyBuffer	= Module._malloc(sidh.privateKeyLength);
+		var publicKeyBuffer		= Module._malloc(sidh.publicKeyBytes);
+		var privateKeyBuffer	= Module._malloc(sidh.privateKeyBytes);
 
 		try {
 			var returnValue	= Module._sidhjs_keypair(
@@ -42,8 +47,8 @@ var sidh	= {
 			);
 
 			return dataReturn(returnValue, {
-				publicKey: dataResult(publicKeyBuffer, sidh.publicKeyLength),
-				privateKey: dataResult(privateKeyBuffer, sidh.privateKeyLength)
+				publicKey: dataResult(publicKeyBuffer, sidh.publicKeyBytes),
+				privateKey: dataResult(privateKeyBuffer, sidh.privateKeyBytes)
 			});
 		}
 		finally {
@@ -53,9 +58,9 @@ var sidh	= {
 	},
 
 	secret: function (publicKey, privateKey) {
-		var publicKeyBuffer		= Module._malloc(sidh.publicKeyLength);
-		var privateKeyBuffer	= Module._malloc(sidh.privateKeyLength);
-		var secretBuffer		= Module._malloc(sidh.secretLength);
+		var publicKeyBuffer		= Module._malloc(sidh.publicKeyBytes);
+		var privateKeyBuffer	= Module._malloc(sidh.privateKeyBytes);
+		var secretBuffer		= Module._malloc(sidh.bytes);
 
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
@@ -69,7 +74,7 @@ var sidh	= {
 
 			return dataReturn(
 				returnValue,
-				dataResult(secretBuffer, sidh.secretLength)
+				dataResult(secretBuffer, sidh.bytes)
 			);
 		}
 		finally {
@@ -80,13 +85,13 @@ var sidh	= {
 	},
 
 	base: {
-		publicKeyLength: Module._sidhjs_public_key_bytes_base(),
-		privateKeyLength: Module._sidhjs_private_key_bytes_base(),
-		secretLength: Module._sidhjs_secret_bytes(),
+		publicKeyBytes: Module._sidhjs_public_key_bytes_base(),
+		privateKeyBytes: Module._sidhjs_private_key_bytes_base(),
+		bytes: Module._sidhjs_secret_bytes(),
 
 		keyPair: function (isAlice) {
-			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyLength);
-			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyLength);
+			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyBytes);
+			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyBytes);
 
 			try {
 				var returnValue	= Module._sidhjs_keypair_base(
@@ -96,8 +101,8 @@ var sidh	= {
 				);
 
 				return dataReturn(returnValue, {
-					publicKey: dataResult(publicKeyBuffer, sidh.base.publicKeyLength),
-					privateKey: dataResult(privateKeyBuffer, sidh.base.privateKeyLength)
+					publicKey: dataResult(publicKeyBuffer, sidh.base.publicKeyBytes),
+					privateKey: dataResult(privateKeyBuffer, sidh.base.privateKeyBytes)
 				});
 			}
 			finally {
@@ -107,9 +112,9 @@ var sidh	= {
 		},
 
 		secret: function (publicKey, privateKey, isAlice, shouldValidate) {
-			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyLength);
-			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyLength);
-			var secretBuffer		= Module._malloc(sidh.base.secretLength);
+			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyBytes);
+			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyBytes);
+			var secretBuffer		= Module._malloc(sidh.base.bytes);
 
 			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 			Module.writeArrayToMemory(privateKey, privateKeyBuffer);
@@ -125,7 +130,7 @@ var sidh	= {
 
 				return dataReturn(
 					returnValue,
-					dataResult(secretBuffer, sidh.base.secretLength)
+					dataResult(secretBuffer, sidh.base.bytes)
 				);
 			}
 			finally {
@@ -143,4 +148,11 @@ return sidh;
 
 }());
 
-self.sidh	= sidh;
+
+if (typeof module !== 'undefined' && module.exports) {
+	sidh.sidh		= sidh;
+	module.exports	= sidh;
+}
+else {
+	self.sidh		= sidh;
+}
