@@ -44,6 +44,8 @@ all:
 		bash -c "emcc -O0 -g4 $$args -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=2 -o dist/sidh.debug.js"; \
 	'
 
+	sed -i 's|require(|eval("require")(|g' dist/sidh.js
+
 	rm -rf SIDH_v1.0 libsodium
 
 clean:
