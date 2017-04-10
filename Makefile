@@ -1,29 +1,30 @@
 all:
-	rm -rf dist SIDH_v1.0 libsodium 2> /dev/null
+	rm -rf dist SIDH libsodium 2> /dev/null
 	mkdir dist
 
 	git clone -b stable https://github.com/jedisct1/libsodium.git
 	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
-	wget https://download.microsoft.com/download/7/B/9/7B962BAC-18F9-4151-A57E-2D3499B6AD25/SIDH_v1.0.zip
-	unzip SIDH_v1.0.zip
-	rm SIDH_v1.0.zip
-	cd SIDH_v1.0 ; mv SIDH_setup.c tmp ; echo '#include <stdlib.h>' > SIDH_setup.c ; cat tmp >> SIDH_setup.c ; rm tmp
+	wget https://download.microsoft.com/download/7/B/9/7B962BAC-18F9-4151-A57E-2D3499B6AD25/SIDH_v1.1.zip
+	unzip SIDH_v1.1.zip
+	rm SIDH_v1.1.zip
+	mv SIDH_v1.1 SIDH
+	cd SIDH ; mv SIDH_setup.c tmp ; echo '#include <stdlib.h>' > SIDH_setup.c ; cat tmp >> SIDH_setup.c ; rm tmp
 
 	bash -c ' \
 		args="$$(echo " \
 			--memory-init-file 0 \
 			-D _GENERIC_ -D __LINUX__ -D _X86_ \
-			-s TOTAL_MEMORY=65536 -s TOTAL_STACK=32768 \
+			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
 			-s NO_DYNAMIC_EXECUTION=1 -s RUNNING_JS_OPTS=1 -s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1 \
 			-s FUNCTION_POINTER_ALIGNMENT=1 -s DISABLE_EXCEPTION_CATCHING=1 \
 			-s RESERVED_FUNCTION_POINTERS=8 -s NO_FILESYSTEM=1 \
 			-Ilibsodium/src/libsodium/include/sodium \
-			-ISIDH_v1.0 \
+			-ISIDH \
 			libsodium/src/libsodium/sodium/utils.c \
 			libsodium/src/libsodium/randombytes/randombytes.c \
-			$$(ls SIDH_v1.0/*.c SIDH_v1.0/generic/*.c) \
+			$$(ls SIDH/*.c SIDH/generic/*.c) \
 			sidh.c \
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_sidhjs_init'"'"', \
@@ -46,7 +47,7 @@ all:
 
 	sed -i 's|require(|eval("require")(|g' dist/sidh.js
 
-	rm -rf SIDH_v1.0 libsodium
+	rm -rf SIDH libsodium
 
 clean:
-	rm -rf dist SIDH_v1.0 libsodium
+	rm -rf dist SIDH libsodium

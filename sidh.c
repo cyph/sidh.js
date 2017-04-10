@@ -9,8 +9,8 @@
 
 PCurveIsogenyStruct isogeny;
 
-long public_key_bytes		= 768;
-long full_public_key_bytes	= 1536;
+long public_key_bytes		= 576;
+long full_public_key_bytes	= 1152;
 long private_key_bytes		= 48;
 long full_private_key_bytes	= 96;
 
@@ -103,31 +103,12 @@ CRYPTO_STATUS sidhjs_secret_base (
 	int is_alice,
 	int should_validate
 ) {
-	CRYPTO_STATUS (*validate)(unsigned char* pk, bool* v, PCurveIsogenyStruct iso);
-	CRYPTO_STATUS (*secret_agreement)(unsigned char* sk, unsigned char* pk, unsigned char* s, PCurveIsogenyStruct iso);
-
 	if (is_alice) {
-		validate			= Validate_PKB;
-		secret_agreement	= SecretAgreement_A;
+		return SecretAgreement_A(private_key, public_key, secret, should_validate, isogeny);
 	}
 	else {
-		validate			= Validate_PKA;
-		secret_agreement	= SecretAgreement_B;
+		return SecretAgreement_B(private_key, public_key, secret, should_validate, isogeny);
 	}
-
-	if (should_validate) {
-		bool valid;
-		CRYPTO_STATUS validate_status	= validate(public_key, &valid, isogeny);
-
-		if (validate_status != CRYPTO_SUCCESS) {
-			return validate_status;
-		}
-		if (!valid) {
-			return CRYPTO_ERROR_PUBLIC_KEY_VALIDATION;
-		}
-	}
-
-	return secret_agreement(private_key, public_key, secret, isogeny);
 }
 
 CRYPTO_STATUS sidhjs_secret (
