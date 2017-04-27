@@ -8690,11 +8690,11 @@ function _emscripten_get_global_libc() {
 function ___errno_location() {
  var $0 = 0, $1 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = (___pthread_self()|0);
+ $0 = (___pthread_self_590()|0);
  $1 = ((($0)) + 64|0);
  return ($1|0);
 }
-function ___pthread_self() {
+function ___pthread_self_590() {
  var $0 = 0, label = 0, sp = 0;
  sp = STACKTOP;
  $0 = (_pthread_self()|0);
