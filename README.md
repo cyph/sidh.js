@@ -10,6 +10,9 @@ A simple wrapper is provided to make SIDH easy to use in web applications.
 The parameters are configured to 128-bit strength. (More specifically, the security level is
 128 quantum bits and 192 classical bits.)
 
+SECURITY NOTE: the scheme is NOT secure when using static keys. See _Remark 1_ of
+[this paper](https://eprint.iacr.org/2016/963.pdf).
+
 ## Example Usage
 
 	const localKeyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
