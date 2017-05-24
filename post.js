@@ -111,7 +111,7 @@ var sidh	= {
 			}
 		},
 
-		secret: function (publicKey, privateKey, isAlice, shouldValidate) {
+		secret: function (publicKey, privateKey, isAlice) {
 			var publicKeyBuffer		= Module._malloc(sidh.base.publicKeyBytes);
 			var privateKeyBuffer	= Module._malloc(sidh.base.privateKeyBytes);
 			var secretBuffer		= Module._malloc(sidh.base.bytes);
@@ -124,8 +124,7 @@ var sidh	= {
 					publicKeyBuffer,
 					privateKeyBuffer,
 					secretBuffer,
-					isAlice ? 1 : 0,
-					shouldValidate ? 1 : 0
+					isAlice ? 1 : 0
 				);
 
 				return dataReturn(

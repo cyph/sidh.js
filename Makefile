@@ -2,13 +2,11 @@ all:
 	rm -rf dist SIDH libsodium 2> /dev/null
 	mkdir dist
 
-	git clone -b stable https://github.com/jedisct1/libsodium.git
+	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
 	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
-	wget https://download.microsoft.com/download/7/B/9/7B962BAC-18F9-4151-A57E-2D3499B6AD25/SIDH_v1.1.zip
-	unzip SIDH_v1.1.zip
-	rm SIDH_v1.1.zip
-	mv SIDH_v1.1 SIDH
+	git clone --depth 1 https://github.com/Microsoft/PQCrypto-SIDH
+	mv PQCrypto-SIDH SIDH
 	cd SIDH ; mv SIDH_setup.c tmp ; echo '#include <stdlib.h>' > SIDH_setup.c ; cat tmp >> SIDH_setup.c ; rm tmp
 
 	bash -c ' \

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "SIDH_internal.h"
+#include "SIDH_api.h"
 #include "SIDH.h"
 #include "randombytes.h"
 #include "utils.h"
@@ -59,10 +59,10 @@ CRYPTO_STATUS sidhjs_keypair_base (
 	int is_alice
 ) {
 	if (is_alice) {
-		return KeyGeneration_A(private_key, public_key, isogeny);
+		return EphemeralKeyGeneration_A(private_key, public_key, isogeny);
 	}
 	else {
-		return KeyGeneration_B(private_key, public_key, isogeny);
+		return EphemeralKeyGeneration_B(private_key, public_key, isogeny);
 	}
 }
 
@@ -100,14 +100,13 @@ CRYPTO_STATUS sidhjs_secret_base (
 	uint8_t* public_key,
 	uint8_t* private_key,
 	uint8_t* secret,
-	int is_alice,
-	int should_validate
+	int is_alice
 ) {
 	if (is_alice) {
-		return SecretAgreement_A(private_key, public_key, secret, should_validate, isogeny);
+		return EphemeralSecretAgreement_A(private_key, public_key, secret, isogeny);
 	}
 	else {
-		return SecretAgreement_B(private_key, public_key, secret, should_validate, isogeny);
+		return EphemeralSecretAgreement_B(private_key, public_key, secret, isogeny);
 	}
 }
 
@@ -137,7 +136,6 @@ CRYPTO_STATUS sidhjs_secret (
 		public_key,
 		private_key,
 		secret,
-		is_alice,
-		1
+		is_alice
 	);
 }
