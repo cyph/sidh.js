@@ -31,11 +31,6 @@ var sidh	= {
 	privateKeyBytes: Module._sidhjs_private_key_bytes(),
 	bytes: Module._sidhjs_secret_bytes(),
 
-	/* Backwards compatibility */
-	publicKeyLength: Module._sidhjs_public_key_bytes(),
-	privateKeyLength: Module._sidhjs_private_key_bytes(),
-	secretLength: Module._sidhjs_secret_bytes(),
-
 	keyPair: function () {
 		var publicKeyBuffer		= Module._malloc(sidh.publicKeyBytes);
 		var privateKeyBuffer	= Module._malloc(sidh.privateKeyBytes);
