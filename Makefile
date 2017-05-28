@@ -12,7 +12,7 @@ all:
 	bash -c ' \
 		args="$$(echo " \
 			--memory-init-file 0 \
-			-D _GENERIC_ -D __LINUX__ -D _X86_ \
+			-D_GENERIC_ -D__LINUX__ -D_X86_ \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
 			-s NO_DYNAMIC_EXECUTION=1 -s RUNNING_JS_OPTS=1 -s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1 \
