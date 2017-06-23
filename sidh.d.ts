@@ -1,19 +1,19 @@
 declare module 'sidh' {
 	interface ISIDH {
 		/** Length of shared secret. */
-		bytes: number;
+		bytes: Promise<number>;
 
 		/** Private key length. */
-		privateKeyBytes: number;
+		privateKeyBytes: Promise<number>;
 
 		/** Public key length. */
-		publicKeyBytes: number;
+		publicKeyBytes: Promise<number>;
 
 		/** Generates key pair. */
-		keyPair () : {privateKey: Uint8Array; publicKey: Uint8Array};
+		keyPair () : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;
 
 		/** Establishes shared secret. */
-		secret (publicKey: Uint8Array, privateKey: Uint8Array) : Uint8Array;
+		secret (publicKey: Uint8Array, privateKey: Uint8Array) : Promise<Uint8Array>;
 	}
 
 	const sidh: ISIDH;
