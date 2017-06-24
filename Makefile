@@ -44,27 +44,20 @@ all:
 
 	cp pre.js dist/sidh.tmp.js
 	echo " \
-		var moduleReady; \
-		if (typeof WebAssembly !== 'undefined') { \
+		var finalModule; \
+		var moduleReady = Promise.resolve().then(function () { \
 	" >> dist/sidh.tmp.js
 	cat dist/sidh.wasm.js >> dist/sidh.tmp.js
 	echo " \
-			moduleReady = new Promise(function (resolve) { \
-				var interval = setInterval(function () { \
-					if (!Module.usingWasm) { \
-						return; \
-					} \
-					clearInterval(interval); \
-					resolve(); \
-				}, 50); \
+			return Module['wasmReady'].then(function () { \
+				finalModule = Module; \
 			});\
-		} \
-		else { \
+		}).catch(function () { \
 	" >> dist/sidh.tmp.js
 	cat dist/sidh.asm.js >> dist/sidh.tmp.js
 	echo " \
-			moduleReady = Promise.resolve(); \
-		} \
+			finalModule = Module; \
+		}); \
 	" >> dist/sidh.tmp.js
 	cat post.js >> dist/sidh.tmp.js
 

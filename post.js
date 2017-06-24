@@ -23,9 +23,11 @@ function dataFree (buffer) {
 }
 
 
-var publicKeyBytes, privateKeyBytes, bytes;
+var Module, publicKeyBytes, privateKeyBytes, bytes;
 
 var initiated	= moduleReady.then(function () {
+	Module	= finalModule;
+
 	Module._sidhjs_init();
 
 	publicKeyBytes	= Module._sidhjs_public_key_bytes();
