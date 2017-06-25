@@ -42,3 +42,20 @@ SECURITY NOTE: the scheme is NOT secure when using static keys. See _Remark 1_ o
 
 Note: This library only handles generating shared secrets; you'll need to handle key derivation
 and symmetric encryption from there.
+
+## Changelog
+
+Breaking changes in major versions:
+
+4.0.0:
+
+* As part of upgrading from asm.js to WebAssembly (with asm.js included as a fallback),
+the API is fully asynchronous.
+
+3.0.0:
+
+* Removed some undocumented functions as part of minor API cleanup.
+
+2.0.0:
+
+* Upgraded to SIDH 2.0.
