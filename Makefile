@@ -44,19 +44,22 @@ all:
 
 	cp pre.js dist/sidh.tmp.js
 	echo " \
-		var finalModule; \
-		var moduleReady = Promise.resolve().then(function () { \
+		var Module = {}; \
+		var _Module = Module; \
+		Module.ready = new Promise(function (resolve, reject) { \
+			var Module = _Module; \
+			Module.onAbort = reject; \
+			Module.onRuntimeInitialized = resolve; \
 	" >> dist/sidh.tmp.js
 	cat dist/sidh.wasm.js >> dist/sidh.tmp.js
 	echo " \
-			return Module['wasmReady'].then(function () { \
-				finalModule = Module; \
-			});\
 		}).catch(function () { \
+			var Module = _Module; \
+			Module.onAbort = undefined; \
+			Module.onRuntimeInitialized = undefined; \
 	" >> dist/sidh.tmp.js
 	cat dist/sidh.asm.js >> dist/sidh.tmp.js
 	echo " \
-			finalModule = Module; \
 		}); \
 	" >> dist/sidh.tmp.js
 	cat post.js >> dist/sidh.tmp.js
