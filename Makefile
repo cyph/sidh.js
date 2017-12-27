@@ -11,10 +11,11 @@ all:
 
 	bash -c ' \
 		args="$$(echo " \
+			--closure 1 \
 			-s SINGLE_FILE=1 \
 			-D_GENERIC_ -D__LINUX__ -D_X86_ \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
-			-s NO_DYNAMIC_EXECUTION=1 -s ASSERTIONS=0 \
+			-s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1 \
 			-s FUNCTION_POINTER_ALIGNMENT=1 -s DISABLE_EXCEPTION_CATCHING=1 \
 			-s RESERVED_FUNCTION_POINTERS=8 -s NO_FILESYSTEM=1 \
@@ -38,7 +39,7 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s RUNNING_JS_OPTS=1 -s NO_EXIT_RUNTIME=1 $$args -o dist/sidh.asm.js"; \
+		bash -c "emcc -Oz -s RUNNING_JS_OPTS=1 $$args -o dist/sidh.asm.js"; \
 		bash -c "emcc -O3 -s WASM=1 $$args -o dist/sidh.wasm.js"; \
 	'
 
