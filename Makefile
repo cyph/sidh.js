@@ -11,7 +11,6 @@ all:
 
 	bash -c ' \
 		args="$$(echo " \
-			--closure 1 \
 			-s SINGLE_FILE=1 \
 			-D_GENERIC_ -D__LINUX__ -D_X86_ \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
