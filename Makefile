@@ -25,6 +25,8 @@ all:
 			$$(ls SIDH/*.c SIDH/generic/*.c) \
 			sidh.c \
 			-s EXPORTED_FUNCTIONS=\"[ \
+				'"'"'_free'"'"', \
+				'"'"'_malloc'"'"', \
 				'"'"'_sidhjs_init'"'"', \
 				'"'"'_sidhjs_keypair_base'"'"', \
 				'"'"'_sidhjs_keypair'"'"', \
