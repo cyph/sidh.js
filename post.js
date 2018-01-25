@@ -1,9 +1,5 @@
 ;
 
-function writeArrayToMemory (array, buffer) {
-	Module.HEAP8.set(array, buffer);
-}
-
 function dataReturn (returnValue, result) {
 	if (returnValue === 0) {
 		return result;
@@ -69,8 +65,8 @@ var sidh	= {
 		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 		var secretBuffer		= Module._malloc(bytes);
 
-		writeArrayToMemory(publicKey, publicKeyBuffer);
-		writeArrayToMemory(privateKey, privateKeyBuffer);
+		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
 		try {
 			var returnValue	= Module._sidhjs_secret(
@@ -123,8 +119,8 @@ var sidh	= {
 			var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 			var secretBuffer		= Module._malloc(bytes);
 
-			writeArrayToMemory(publicKey, publicKeyBuffer);
-			writeArrayToMemory(privateKey, privateKeyBuffer);
+			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+			Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
 			try {
 				var returnValue	= Module._sidhjs_secret_base(

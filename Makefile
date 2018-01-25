@@ -25,6 +25,9 @@ all:
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$(ls SIDH/*.c SIDH/generic/*.c) \
 			sidh.c \
+			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
+				'"'"'writeArrayToMemory'"'"' \
+			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
