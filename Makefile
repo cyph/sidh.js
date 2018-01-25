@@ -5,7 +5,7 @@ all:
 	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
 	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
-	git clone --depth 1 https://github.com/Microsoft/PQCrypto-SIDH
+	git clone --depth 1 -b v2.0 https://github.com/Microsoft/PQCrypto-SIDH
 	mv PQCrypto-SIDH SIDH
 	cd SIDH ; mv SIDH_setup.c tmp ; echo '#include <stdlib.h>' > SIDH_setup.c ; cat tmp >> SIDH_setup.c ; rm tmp
 
