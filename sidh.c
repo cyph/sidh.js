@@ -1,141 +1,139 @@
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include "SIDH_api.h"
-#include "SIDH.h"
-#include "randombytes.h"
-#include "utils.h"
+#include "P503_api.h"
+#include "sodium.h"
 
 
-PCurveIsogenyStruct isogeny;
-
-long public_key_bytes		= 576;
-long full_public_key_bytes	= 1152;
-long private_key_bytes		= 48;
-long full_private_key_bytes	= 96;
-
-
-CRYPTO_STATUS sidhjs_randombytes (unsigned int nbytes, unsigned char* random_array) {
-	randombytes_buf(random_array, nbytes);
-	return CRYPTO_SUCCESS;
-}
-
-CRYPTO_STATUS sidhjs_init () {
+void sidhjs_init () {
 	randombytes_stir();
-
-	isogeny	= SIDH_curve_allocate(&CurveIsogeny_SIDHp751);
-
-	return SIDH_curve_initialize(
-		isogeny,
-		sidhjs_randombytes,
-		&CurveIsogeny_SIDHp751
-	);
-}
-
-long sidhjs_public_key_bytes_base () {
-	return public_key_bytes;
 }
 
 long sidhjs_public_key_bytes () {
-	return full_public_key_bytes;
-}
-
-long sidhjs_private_key_bytes_base () {
-	return private_key_bytes;
+	return CRYPTO_PUBLICKEYBYTES;
 }
 
 long sidhjs_private_key_bytes () {
-	return full_public_key_bytes + full_private_key_bytes;
+	return CRYPTO_SECRETKEYBYTES;
 }
 
-long sidhjs_secret_bytes () {
-	return 192;
+long sidhjs_encrypted_bytes () {
+	return CYPHERTEXT_LEN + CRYPTO_CIPHERTEXTBYTES;
 }
 
-
-CRYPTO_STATUS sidhjs_keypair_base (
-	uint8_t* public_key,
-	uint8_t* private_key,
-	int is_alice
-) {
-	if (is_alice) {
-		return EphemeralKeyGeneration_A(private_key, public_key, isogeny);
-	}
-	else {
-		return EphemeralKeyGeneration_B(private_key, public_key, isogeny);
-	}
+long sidhjs_decrypted_bytes () {
+	return CYPHERTEXT_LEN - crypto_aead_chacha20poly1305_IETF_ABYTES;
 }
 
-CRYPTO_STATUS sidhjs_keypair (
+long sidhjs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
 ) {
-	CRYPTO_STATUS status	= sidhjs_keypair_base(public_key, private_key, 1);
+	return crypto_kem_keypair_SIKEp503(public_key, private_key);
+}
 
-	if (status != CRYPTO_SUCCESS) {
+long sidhjs_encrypt (
+	uint8_t* message,
+	long message_len,
+	uint8_t* public_key,
+	uint8_t* cyphertext
+) {
+	uint8_t sike_secret[CRYPTO_BYTES];
+
+	long status	= crypto_kem_enc_SIKEp503(cyphertext, sike_secret, public_key);
+
+	if (status != 0) {
 		return status;
 	}
 
-	status	= sidhjs_keypair_base(
-		public_key + public_key_bytes,
-		private_key + private_key_bytes,
+	uint8_t key[crypto_aead_chacha20poly1305_KEYBYTES];
+
+	status	= crypto_generichash(
+		key,
+		crypto_aead_chacha20poly1305_KEYBYTES,
+		sike_secret,
+		CRYPTO_BYTES,
+		NULL,
 		0
 	);
 
-	if (status != CRYPTO_SUCCESS) {
+	sodium_memzero(sike_secret, CRYPTO_BYTES);
+
+	if (status != 0) {
 		return status;
 	}
 
-	memcpy(
-		private_key + full_private_key_bytes,
-		public_key,
-		full_public_key_bytes
+	unsigned long long cyphertext_len;
+	uint8_t nonce[crypto_aead_chacha20poly1305_IETF_NPUBBYTES] = {0};
+
+	status	= crypto_aead_chacha20poly1305_ietf_encrypt(
+		cyphertext + CRYPTO_CIPHERTEXTBYTES,
+		&cyphertext_len,
+		message,
+		sidhjs_decrypted_bytes(),
+		cyphertext,
+		CRYPTO_CIPHERTEXTBYTES,
+		NULL,
+		nonce,
+		key
 	);
 
-	return CRYPTO_SUCCESS;
+	sodium_memzero(key, CRYPTO_BYTES);
+
+	if (status != 0) {
+		sodium_memzero(cyphertext, sidhjs_encrypted_bytes());
+	}
+
+	return status;
 }
 
-
-CRYPTO_STATUS sidhjs_secret_base (
-	uint8_t* public_key,
+long sidhjs_decrypt (
+	uint8_t* cyphertext,
 	uint8_t* private_key,
-	uint8_t* secret,
-	int is_alice
+	uint8_t* decrypted
 ) {
-	if (is_alice) {
-		return EphemeralSecretAgreement_A(private_key, public_key, secret, isogeny);
-	}
-	else {
-		return EphemeralSecretAgreement_B(private_key, public_key, secret, isogeny);
-	}
-}
+	uint8_t sike_secret[CRYPTO_BYTES];
 
-CRYPTO_STATUS sidhjs_secret (
-	uint8_t* public_key,
-	uint8_t* private_key,
-	uint8_t* secret
-) {
-	int is_alice	= sodium_compare(
-		public_key,
-		private_key + full_private_key_bytes,
-		full_public_key_bytes
+	long status	= crypto_kem_dec_SIKEp503(sike_secret, cyphertext, private_key);
+
+	if (status != 0) {
+		return status;
+	}
+
+	uint8_t key[crypto_aead_chacha20poly1305_KEYBYTES];
+
+	status	= crypto_generichash(
+		key,
+		crypto_aead_chacha20poly1305_KEYBYTES,
+		sike_secret,
+		CRYPTO_BYTES,
+		NULL,
+		0
 	);
 
-	if (is_alice == 1) {
-		public_key += public_key_bytes;
-	}
-	else if (is_alice == -1) {
-		is_alice = 0;
-		private_key += private_key_bytes;
-	}
-	else {
-		return CRYPTO_ERROR_INVALID_PARAMETER;
+	sodium_memzero(sike_secret, CRYPTO_BYTES);
+
+	if (status != 0) {
+		return status;
 	}
 
-	return sidhjs_secret_base(
-		public_key,
-		private_key,
-		secret,
-		is_alice
+	unsigned long long decrypted_len;
+	uint8_t nonce[crypto_aead_chacha20poly1305_IETF_NPUBBYTES] = {0};
+
+	status	= crypto_aead_chacha20poly1305_ietf_decrypt(
+		decrypted,
+		&decrypted_len,
+		NULL,
+		cyphertext + CRYPTO_CIPHERTEXTBYTES,
+		CYPHERTEXT_LEN,
+		cyphertext,
+		CRYPTO_CIPHERTEXTBYTES,
+		nonce,
+		key
 	);
+
+	sodium_memzero(key, CRYPTO_BYTES);
+
+	if (status != 0) {
+		sodium_memzero(decrypted, sidhjs_decrypted_bytes());
+	}
+
+	return status;
 }

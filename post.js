@@ -25,21 +25,23 @@ function dataFree (buffer) {
 }
 
 
-var publicKeyBytes, privateKeyBytes, bytes;
+var publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
 
 var initiated	= Module.ready.then(function () {
 	Module._sidhjs_init();
 
 	publicKeyBytes	= Module._sidhjs_public_key_bytes();
 	privateKeyBytes	= Module._sidhjs_private_key_bytes();
-	bytes			= Module._sidhjs_secret_bytes();
+	cyphertextBytes	= Module._sidhjs_encrypted_bytes();
+	plaintextBytes	= Module._sidhjs_decrypted_bytes();
 });
 
 
 var sidh	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
-	bytes: initiated.then(function () { return bytes; }),
+	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
+	plaintextBytes: initiated.then(function () { return plaintextBytes - 2; }),
 
 	keyPair: function () { return initiated.then(function () {
 		var publicKeyBuffer		= Module._malloc(publicKeyBytes);
@@ -62,88 +64,71 @@ var sidh	= {
 		}
 	}); },
 
-	secret: function (publicKey, privateKey) { return initiated.then(function () {
-		var publicKeyBuffer		= Module._malloc(publicKeyBytes);
-		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
-		var secretBuffer		= Module._malloc(bytes);
+	encrypt: function (message, publicKey) { return initiated.then(function () {
+		if (message.length > (plaintextBytes - 2)) {
+			throw new Error('Plaintext length exceeds sidh.plaintextBytes.');
+		}
 
+		var messageBuffer	= Module._calloc(plaintextBytes, 1);
+		var publicKeyBuffer	= Module._malloc(publicKeyBytes);
+		var encryptedBuffer	= Module._malloc(cyphertextBytes);
+
+		Module.writeArrayToMemory(
+			new Uint8Array(new Uint16Array([message.length]).buffer),
+			messageBuffer
+		);
+		Module.writeArrayToMemory(message, messageBuffer + 2);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
-		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
 		try {
-			var returnValue	= Module._sidhjs_secret(
+			var returnValue	= Module._sidhjs_encrypt(
+				messageBuffer,
+				message.length,
 				publicKeyBuffer,
-				privateKeyBuffer,
-				secretBuffer
+				encryptedBuffer
 			);
 
 			return dataReturn(
 				returnValue,
-				dataResult(secretBuffer, bytes)
+				dataResult(encryptedBuffer, cyphertextBytes)
 			);
 		}
 		finally {
+			dataFree(messageBuffer);
 			dataFree(publicKeyBuffer);
-			dataFree(privateKeyBuffer);
-			dataFree(secretBuffer);
+			dataFree(encryptedBuffer);
 		}
 	}); },
 
-	base: {
-		publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
-		privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
-		bytes: initiated.then(function () { return bytes; }),
+	decrypt: function (encrypted, privateKey) { return initiated.then(function () {
+		var encryptedBuffer		= Module._malloc(cyphertextBytes);
+		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
+		var decryptedBuffer		= Module._malloc(plaintextBytes);
 
-		keyPair: function (isAlice) { return initiated.then(function () {
-			var publicKeyBuffer		= Module._malloc(publicKeyBytes);
-			var privateKeyBuffer	= Module._malloc(privateKeyBytes);
+		Module.writeArrayToMemory(encrypted, encryptedBuffer);
+		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
-			try {
-				var returnValue	= Module._sidhjs_keypair_base(
-					publicKeyBuffer,
-					privateKeyBuffer,
-					isAlice ? 1 : 0
-				);
+		try {
+			var returnValue	= Module._sidhjs_decrypt(
+				encryptedBuffer,
+				privateKeyBuffer,
+				decryptedBuffer
+			);
 
-				return dataReturn(returnValue, {
-					publicKey: dataResult(publicKeyBuffer, publicKeyBytes),
-					privateKey: dataResult(privateKeyBuffer, privateKeyBytes)
-				});
-			}
-			finally {
-				dataFree(publicKeyBuffer);
-				dataFree(privateKeyBuffer);
-			}
-		}); },
-
-		secret: function (publicKey, privateKey, isAlice) { return initiated.then(function () {
-			var publicKeyBuffer		= Module._malloc(publicKeyBytes);
-			var privateKeyBuffer	= Module._malloc(privateKeyBytes);
-			var secretBuffer		= Module._malloc(bytes);
-
-			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
-			Module.writeArrayToMemory(privateKey, privateKeyBuffer);
-
-			try {
-				var returnValue	= Module._sidhjs_secret_base(
-					publicKeyBuffer,
-					privateKeyBuffer,
-					secretBuffer,
-					isAlice ? 1 : 0
-				);
-
-				return dataReturn(
-					returnValue,
-					dataResult(secretBuffer, bytes)
-				);
-			}
-			finally {
-				dataFree(publicKeyBuffer);
-				dataFree(privateKeyBuffer);
-				dataFree(secretBuffer);
-			}
-		}); }
-	}
+			return dataReturn(
+				returnValue,
+				dataResult(
+					decryptedBuffer + 2,
+					new Uint16Array(dataResult(decryptedBuffer, 2).buffer)[0]
+				)
+			);
+		}
+		finally {
+			dataFree(encryptedBuffer);
+			dataFree(privateKeyBuffer);
+			dataFree(decryptedBuffer);
+		}
+	}); }
 };
 
 

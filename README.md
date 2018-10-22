@@ -4,48 +4,48 @@
 
 The [SIDH](https://en.wikipedia.org/wiki/Supersingular_isogeny_key_exchange) post-quantum asymmetric
 cipher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
-The specific implementation in use is [from Microsoft Research](https://www.microsoft.com/en-us/research/project/sidh-library/).
+The specific implementation in use is [from Microsoft Research](https://www.microsoft.com/en-us/research/project/sidh-library).
 A simple JavaScript wrapper is provided to make SIDH easy to use in web applications.
 
-The parameters are configured to 128-bit strength. (More specifically, the security level is
-128 quantum bits and 192 classical bits.)
-
-SECURITY NOTE: the scheme is NOT secure when using static keys. See _Remark 1_ of
-[this paper](https://eprint.iacr.org/2016/963.pdf).
+The parameters are configured to 128-bit strength (SIKEp503).
 
 ## Example Usage
 
 	(async () => {
-		const localKeyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
 			await sidh.keyPair()
 		;
 
-		const remoteKeyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await sidh.keyPair()
+		const plaintext /*: Uint8Array */ =
+			new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
 		;
 
-		const localSecret /*: Uint8Array */ =
-			await sidh.secret(remoteKeyPair.publicKey, localKeyPair.privateKey)
+		const encrypted /*: Uint8Array */ =
+			await sidh.encrypt(plaintext, keyPair.publicKey)
 		;
 
-		const remoteSecret /*: Uint8Array */ =
-			await sidh.secret(localKeyPair.publicKey, remoteKeyPair.privateKey)
+		const decrypted /*: Uint8Array */ =
+			await sidh.decrypt(encrypted, keyPair.privateKey) // same as plaintext
 		;
 
-		// localSecret and remoteSecret are equal
-
-		console.log(localKeyPair);
-		console.log(remoteKeyPair);
-		console.log(localSecret);
-		console.log(remoteSecret);
+		console.log(keyPair);
+		console.log(plaintext);
+		console.log(encrypted);
+		console.log(decrypted);
 	})();
 
-Note: This library only handles generating shared secrets; you'll need to handle key derivation
-and symmetric encryption from there.
+Note: SIDH is a low-level cryptographic primitive, not a high-level construct like libsodium's
+[crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
+This module can be combined with a symmetric cipher and a MAC to provide such a construct, but you
+should avoid using sidh.js directly for anything important if you lack the experience to do so.
 
 ## Changelog
 
 Breaking changes in major versions:
+
+5.0.0:
+
+* Upgraded to SIDH 3.0 and built new API in line with mceliece.js and ntru.js.
 
 4.0.0:
 

@@ -1,7 +1,10 @@
 declare module 'sidh' {
 	interface ISIDH {
-		/** Length of shared secret. */
-		bytes: Promise<number>;
+		/** Maximum plaintext length. */
+		plaintextBytes: Promise<number>;
+
+		/** Cyphertext length. */
+		cyphertextBytes: Promise<number>;
 
 		/** Private key length. */
 		privateKeyBytes: Promise<number>;
@@ -9,11 +12,14 @@ declare module 'sidh' {
 		/** Public key length. */
 		publicKeyBytes: Promise<number>;
 
+		/** Decrypts cyphertext with privateKey. */
+		decrypt (encrypted: Uint8Array|string, privateKey: Uint8Array) : Promise<Uint8Array>;
+
+		/** Encrypts plaintext with publicKey. */
+		encrypt (message: Uint8Array|string, publicKey: Uint8Array) : Promise<Uint8Array>;
+
 		/** Generates key pair. */
 		keyPair () : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;
-
-		/** Establishes shared secret. */
-		secret (publicKey: Uint8Array, privateKey: Uint8Array) : Promise<Uint8Array>;
 	}
 
 	const sidh: ISIDH;
