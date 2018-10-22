@@ -79,7 +79,7 @@ all:
 	" >> dist/sidh.tmp.js
 	cat post.js >> dist/sidh.tmp.js
 
-	uglifyjs dist/sidh.tmp.js -cmo dist/sidh.js
+	terser dist/sidh.tmp.js -cmo dist/sidh.js
 
 	sed -i 's|use asm||g' dist/sidh.js
 	sed -i 's|require(|eval("require")(|g' dist/sidh.js
