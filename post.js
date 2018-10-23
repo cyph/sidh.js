@@ -41,7 +41,7 @@ var sidh	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
-	plaintextBytes: initiated.then(function () { return plaintextBytes - 2; }),
+	plaintextBytes: initiated.then(function () { return plaintextBytes - 1; }),
 
 	keyPair: function () { return initiated.then(function () {
 		var publicKeyBuffer		= Module._malloc(publicKeyBytes);
@@ -65,7 +65,7 @@ var sidh	= {
 	}); },
 
 	encrypt: function (message, publicKey) { return initiated.then(function () {
-		if (message.length > (plaintextBytes - 2)) {
+		if (message.length > (plaintextBytes - 1)) {
 			throw new Error('Plaintext length exceeds sidh.plaintextBytes.');
 		}
 
@@ -73,11 +73,8 @@ var sidh	= {
 		var publicKeyBuffer	= Module._malloc(publicKeyBytes);
 		var encryptedBuffer	= Module._malloc(cyphertextBytes);
 
-		Module.writeArrayToMemory(
-			new Uint8Array(new Uint16Array([message.length]).buffer),
-			messageBuffer
-		);
-		Module.writeArrayToMemory(message, messageBuffer + 2);
+		Module.writeArrayToMemory(new Uint8Array([message.length]), messageBuffer);
+		Module.writeArrayToMemory(message, messageBuffer + 1);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 
 		try {
@@ -118,8 +115,8 @@ var sidh	= {
 			return dataReturn(
 				returnValue,
 				dataResult(
-					decryptedBuffer + 2,
-					new Uint16Array(dataResult(decryptedBuffer, 2).buffer)[0]
+					decryptedBuffer + 1,
+					dataResult(decryptedBuffer, 1)[0]
 				)
 			);
 		}

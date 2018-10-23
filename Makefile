@@ -10,7 +10,7 @@ all:
 	bash -c ' \
 		args="$$(echo " \
 			-s SINGLE_FILE=1 \
-			-DCYPHERTEXT_LEN=124 \
+			-DCYPHERTEXT_LEN=123 \
 			-D_GENERIC_ -D__LINUX__ -D_X86_ \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
 			-s ASSERTIONS=0 \
