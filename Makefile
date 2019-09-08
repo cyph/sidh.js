@@ -53,14 +53,13 @@ all:
 	cp pre.js dist/sidh.tmp.js
 	echo " \
 		var Module = {}; \
-		var _Module = Module; \
 		Module.ready = new Promise(function (resolve, reject) { \
-			var Module = _Module; \
+			var Module = {}; \
 			Module.onAbort = reject; \
 			Module.onRuntimeInitialized = function () { \
 				try { \
 					Module._sidhjs_public_key_bytes(); \
-					resolve(); \
+					resolve(Module); \
 				} \
 				catch (err) { \
 					reject(err); \
@@ -70,12 +69,13 @@ all:
 	cat dist/sidh.wasm.js >> dist/sidh.tmp.js
 	echo " \
 		}).catch(function () { \
-			var Module = _Module; \
-			Module.onAbort = undefined; \
-			Module.onRuntimeInitialized = undefined; \
+			var Module = {}; \
 	" >> dist/sidh.tmp.js
 	cat dist/sidh.asm.js >> dist/sidh.tmp.js
 	echo " \
+			return Module; \
+		}).then(function (m) { \
+			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
 	" >> dist/sidh.tmp.js
 	cat post.js >> dist/sidh.tmp.js
