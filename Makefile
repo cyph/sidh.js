@@ -9,6 +9,7 @@ all:
 
 	bash -c ' \
 		args="$$(echo " \
+			--memory-init-file 0 \
 			-s SINGLE_FILE=1 \
 			-DCYPHERTEXT_LEN=123 \
 			-D_GENERIC_ -D__LINUX__ -D_X86_ \
