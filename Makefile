@@ -26,7 +26,7 @@ all:
 			$$(find libsodium/src/libsodium -type f -name '\\*.c') \
 			SIDH/src/sha3/*.c \
 			SIDH/src/P503/generic/*.c \
-			SIDH/src/P503/*.c \
+			SIDH/src/P503/P503.c \
 			sidh.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
