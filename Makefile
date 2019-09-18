@@ -5,7 +5,7 @@ all:
 	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
 	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
-	git clone --depth 1 https://github.com/Microsoft/PQCrypto-SIDH SIDH
+	git clone -b v3.0 --depth 1 https://github.com/Microsoft/PQCrypto-SIDH SIDH
 
 	bash -c ' \
 		args="$$(echo " \
